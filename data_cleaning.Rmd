@@ -18,12 +18,13 @@ ANES <- read_dta("C:/Users/david/Downloads/ANES.dta")
 
 
 ```{r, echo = FALSE}
+
 # Cleaning CCES Data. First, 2008-2012 Presidential switchers:
 
 pres12 <- CCES_Panel_Full3waves_VV_V4 %>%
   filter(CC10_317 < 3, CC12_410a < 3, CC10_317 != CC12_410a)
 
-# then, House of R 2010-2012
+# then, House of R 2010-2012;
 
 house12 <- CCES_Panel_Full3waves_VV_V4 %>%
   filter(CC10_412 < 3, CC12_412 < 3, CC10_412 != CC12_412)
@@ -43,36 +44,4 @@ house12_vars <- house12 %>%
 
 
 
-```{r, echo = FALSE}
 
-# Strength of partisanship for Democrats graph for years 1948-2012
-
-ANES_D <- ANES %>%
-filter(VCF0301 < 4) %>%
-group_by(VCF0004) %>%
-summarize(avg_strength = mean(VCF0301))
-ggplot(ANES_D, aes(VCF0004, avg_strength)) + geom_line() + scale_x_continuous(breaks=c(1948, 1956, 1964, 1972, 1980, 1988, 1996, 2004, 2012), labels = c(1948, 1956, 1964, 1972, 1980, 1988, 1996, 2004, 2012), limits=c(1948,2012))+ scale_y_continuous(limits=c(1,3)) + labs(title = "Strength of Partisanship for Democrats, 1948-2012")
-
-# Trying to make Democrat share of vote
-
-PresVoteShare <- read_html("https://en.wikipedia.org/wiki/List_of_United_States_presidential_elections_by_popular_vote_margin")
-
-PresVoteShare_tab <- PresVoteShare %>%
-  html_nodes("table")
-
-PresVoteShare_tab <- PresVoteShare_tab[[2]] %>%
-  html_table
-
-PresVoteShare_tab <- PresVoteShare_tab[-2, -1] %>%
-  filter(Election > 1947) %>%
-  subset(select = c(1, 3, 7)) %>%
-  arrange(Election)
-```
- 
- # KEEP UNTIL TRANSFER
- Q for Steve:
-1) What challenges will I run into due to the relative lack of "switchers"? [Don't worry about this. You can analyze the switchers by group, and/or aggregate them.]
-2) Do I need the weights? [Nope]
-3) Can I use the 'who you voted for in 2008' q (asked in 2010)? [Yes]
-
-Also, Steve says consult Key's The Responsible Electorate, and comparing waves to the cross sections

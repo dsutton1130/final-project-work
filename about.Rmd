@@ -1,0 +1,26 @@
+---
+title: "milestone_3"
+author: "David Sutton"
+date: "2/28/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## About my project
+
+My final project will take a look at people who vote for a Democrat (Republican)
+in one election and then vote for a Republican (Democrat) in the following election. I have data on some of these voters (sometimes referred to as "switchers"), which comes from the 2010-2014 panel survey by the Cooperative Congressional Election Study (CCES) and the American National Elections Study (I have yet to decide which surveys from the ANES I will use, but I have loaded the 1948-2016 series for now). So far, I have about 1250 observations from the CCES data.
+
+I have isolated the CCES switchers for the 2012 and 2014 House of Representatives and the 2012 Presidential race (code for this is in my repo, under data_cleaning.Rmd). I am analyzing the data to see if there are any notable relationships between switchers' policy positions and demographics, and their vote-switching from one party to the other. Here is a partial list of some variables which I plan to include in my project:
+
+Demographic data such as age, sex, race, income, and education; positions on abortion, affirmative action, economics, gun control, immigration, and same-sex marriage; party and ideological identification; incumbent approval rating; and I even have data on if the voter has had particular life experiences during the previous two years - these experiences include visiting the doctor or hospital emergency room, receiving a raise at work, losing their job, and being the victime of a crime.
+
+Link to my repo below:
+
+# https://github.com/dsutton1130/final-project-work.git #
+
+
+
