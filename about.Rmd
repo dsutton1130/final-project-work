@@ -16,7 +16,7 @@ in one election and then vote for a Republican (Democrat) in the following elect
 
 I have isolated the CCES switchers for the 2012 and 2014 House of Representatives and the 2012 Presidential race (code for this is in my repo, under data_cleaning.Rmd). I am analyzing the data to see if there are any notable relationships between switchers' policy positions and demographics, and their vote-switching from one party to the other. Here is a partial list of some variables which I plan to include in my project:
 
-Demographic data such as age, sex, race, income, and education; positions on abortion, affirmative action, economics, gun control, immigration, and same-sex marriage; party and ideological identification; incumbent approval rating; and I even have data on if the voter has had particular life experiences during the previous two years - these experiences include visiting the doctor or hospital emergency room, receiving a raise at work, losing their job, and being the victime of a crime.
+Demographic data such as age, sex, race, income, and education; positions on abortion, affirmative action, economics, gun control, immigration, and same-sex marriage; party and ideological identification; incumbent approval rating; and I even have data on if the voter has had particular life experiences during the previous two years - these experiences include visiting the doctor or hospital emergency room, receiving a raise at work, losing their job, and being the victim of a crime.
 
 Link to my repo below:
 
