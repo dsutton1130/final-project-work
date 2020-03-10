@@ -369,7 +369,66 @@ summary {
 </div>
 
 
-
+<pre><code>## 
+## Call:
+## lm(formula = cbind(house12_vars$housevote10 == 1) ~ race_12 + 
+##     gender_12 + Age + educ_12 + faminc_12, data = house12_vars)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -0.6416 -0.4472 -0.4037  0.5443  0.6511 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)   
+## (Intercept)  0.477072   0.175396   2.720  0.00677 **
+## race_12     -0.010873   0.020799  -0.523  0.60136   
+## gender_12    0.047949   0.047174   1.016  0.30995   
+## Age         -0.001619   0.002136  -0.758  0.44889   
+## educ_12     -0.001164   0.016799  -0.069  0.94477   
+## faminc_12    0.001264   0.000891   1.419  0.15671   
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.4988 on 463 degrees of freedom
+##   (1 observation deleted due to missingness)
+## Multiple R-squared:  0.00852,    Adjusted R-squared:  -0.002187 
+## F-statistic: 0.7957 on 5 and 463 DF,  p-value: 0.5531</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = cbind(house12_vars$housevote10 == 1) ~ guncontrol12 + 
+##     climate12 + immg.status12 + immg.borderpatrol12 + immg.policeqs12 + 
+##     immg.finebiz12 + immg.pubgoods12 + immg.citzdenial12 + abortion12 + 
+##     jobs.envir12 + gaymarriage12 + affirmact12 + balbudget1.12 + 
+##     balbudget2.12, data = house12_vars)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -0.7279 -0.4477 -0.3000  0.5136  0.7791 
+## 
+## Coefficients:
+##                       Estimate Std. Error t value Pr(&gt;|t|)  
+## (Intercept)         -0.0014931  0.2796535  -0.005   0.9957  
+## guncontrol12        -0.0305756  0.0269121  -1.136   0.2565  
+## climate12           -0.0133712  0.0268146  -0.499   0.6183  
+## immg.status12        0.0573803  0.0562189   1.021   0.3080  
+## immg.borderpatrol12  0.0380340  0.0543630   0.700   0.4845  
+## immg.policeqs12      0.0717641  0.0574148   1.250   0.2120  
+## immg.finebiz12       0.0780664  0.0584913   1.335   0.1827  
+## immg.pubgoods12     -0.1115749  0.0571484  -1.952   0.0515 .
+## immg.citzdenial12    0.0962707  0.0607429   1.585   0.1137  
+## abortion12           0.0131956  0.0266816   0.495   0.6212  
+## jobs.envir12         0.0105571  0.0214600   0.492   0.6230  
+## gaymarriage12       -0.0180192  0.0580658  -0.310   0.7565  
+## affirmact12          0.0254488  0.0317017   0.803   0.4225  
+## balbudget1.12        0.0570529  0.0331561   1.721   0.0860 .
+## balbudget2.12       -0.0007952  0.0337554  -0.024   0.9812  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.4969 on 438 degrees of freedom
+##   (17 observations deleted due to missingness)
+## Multiple R-squared:  0.03779,    Adjusted R-squared:  0.007032 
+## F-statistic: 1.229 on 14 and 438 DF,  p-value: 0.2508</code></pre>
 
 
 

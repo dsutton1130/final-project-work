@@ -51,6 +51,19 @@ house14_vars <- house14 %>%
 house12_vars <- rename(house12_vars, housevote10 = CC10_412, housevote12 = CC12_412, economy12 = CC12_302, fedtax.retro12 = CC12_303d, obama.app12 = CC12_308a, congress.app12 = CC12_308b, guncontrol12 = CC12_320, climate12 = CC12_321, immg.status12 = CC12_322_1, immg.borderpatrol12 = CC12_322_2, immg.policeqs12 = CC12_322_3, immg.finebiz12 = CC12_322_4, immg.pubgoods12 = CC12_322_5, immg.citzdenial12 = CC12_322_6, abortion12 = CC12_324, jobs.envir12 = CC12_325, gaymarriage12 = CC12_326, affirmact12 = CC12_327, balbudget1.12 = CC12_328, balbudget2.12 = CC12_329, selfideo12 = CC12_341A, obamaideo12 = CC12_341C, romneyideo12 = CC12_341D, demideo12 = CC12_341E, repideo12 = CC12_341F, houserepideo12 = CC12_341M, partyreg12 = CC12_350, repHouserep12 = CC12_367, docvisit12 = CC12_387_1, newchild12 = CC12_387_10, moveoutchild12 = CC12_387_11, newmarriage12 = CC12_387_12, newdivorce12 = CC12_387_13, descriptrep.race.eth12 = CC12_418aa, AAraceresentA12 = CC12_422a, AAraceresentB12 = CC12_422b, Hispraceresent12 = CC12_423aa)
 
 house14_vars <- rename(house14_vars, housevote12 = CC12_412, housevote14 = CC14_412, economy14 = CC14_302, fedtax.retro14 = CC14_303d, obama.app14 = CC14_308a, congress.app14 = CC14_308b, guncontrol14 = CC14_320, climate14 = CC14_321, immg.status14 = CC14_322_1, immg.borderpatrol14 = CC14_322_2, immg.policeqs14 = CC14_322_3, immg.finebiz14 = CC14_322_4, immg.pubgoods14 = CC14_322_5, immg.citzdenial14 = CC14_322_6, abortion14 = CC14_324, jobs.envir14 = CC14_325, gaymarriage14 = CC14_326, affirmact14 = CC14_327, balbudget1.14 = CC14_328, balbudget2.14 = CC14_329, selfideo14 = CC14_341A, obamaideo14 = CC14_341C, demideo14 = CC14_341E, repideo14 = CC14_341F, houserepideo14 = CC14_341M, partyreg14 = CC14_350, repHouserep14 = CC14_367, docvisit14 = CC14_387_1, newchild14 = CC14_387_10, moveoutchild14 = CC14_387_11, newmarriage14 = CC14_387_12, newdivorce14 = CC14_387_13, descriptrep.race.eth14 = CC14_418aa, AAraceresentA14 = CC14_422a, AAraceresentB14 = CC14_422b, Hispraceresent14 = CC14_423aa)
+
+#Some preliminary analysis
+#Regressing House 2012 Democratic to Republican switchers on demographic data
+
+house12DtoR.demo <- lm(cbind(house12_vars$housevote10 == 1) ~ race_12 + gender_12 + Age + educ_12 + faminc_12, data = house12_vars)
+
+summary(house12DtoR.demo)
+
+# Regressing House 2012 Democratic to Republican switchers on policy positions
+
+house12DtoR.policy <- lm(cbind(house12_vars$housevote10 == 1) ~ guncontrol12 + climate12 + immg.status12 + immg.borderpatrol12 + immg.policeqs12 + immg.finebiz12 + immg.pubgoods12 + immg.citzdenial12 + abortion12 + jobs.envir12 + gaymarriage12 + affirmact12 + balbudget1.12 + balbudget2.12, data = house12_vars)
+
+summary(house12DtoR.policy)
 ```
 
 
