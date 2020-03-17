@@ -24,7 +24,7 @@ ANES <- read_dta("C:/Users/david/Downloads/ANES.dta")
 pres12 <- CCES_Panel_Full3waves_VV_V4 %>%
   filter(CC10_317 < 3, CC12_410a < 3, CC10_317 != CC12_410a)
 
-# then, House of R 2010-2012;
+# then, House of Rep 2010-2012;
 
 house12 <- CCES_Panel_Full3waves_VV_V4 %>%
   filter(CC10_412 < 3, CC12_412 < 3, CC10_412 != CC12_412)
@@ -37,34 +37,124 @@ house14 <- CCES_Panel_Full3waves_VV_V4 %>%
 # Now, writing code to drop variables we don't want/keep variables we want, filter a couple variables, renaming the variables and creating an "Age" column for each new dataset derived from the CCES (no pres12 yet).
 
 house12_vars <- house12 %>%
-  subset(select = c(birthyr_12, gender_12, race_12, CC10_412, CC12_412, CC12_302, CC12_303d, CC12_308a, CC12_308b, CC12_315a, CC12_320, CC12_321, CC12_322_1:CC12_322_6, CC12_324:CC12_329, CC12_341A, CC12_341C:CC12_341F, CC12_341M, CC12_350, CC12_367, CC12_387_1:CC12_387_13, CC12_418aa, CC12_422a:CC12_423bb, pid7_12, pid3_12, ideo5_12, pew_prayer_12, religpew_12, faminc_12, educ_12)) %>%
+  subset(select = c(birthyr_12, gender_12, race_12, CC10_412, CC12_412, CC12_302, CC12_303d, CC12_308a, CC12_308b, CC12_315a, CC12_320, CC12_321, CC12_322_1:CC12_322_6, CC12_324:CC12_329, CC12_341A, CC12_341C:CC12_341F, CC12_341M, CC12_350, CC12_367, CC12_387_1:CC12_387_13, CC12_418aa, CC12_422a:CC12_423bb, pid7_12, pid3_12, ideo5_12, pew_prayer_12, religpew_12, faminc_12, educ_12, StateAbbr_12)) %>%
   filter(CC12_303d < 5, pid7_12 < 9) %>%
   mutate("Age" = (2012 - birthyr_12))
 
 house14_vars <- house14 %>%
-  subset(select = c(birthyr_14, gender_14, race_14, CC12_412, CC14_412, CC14_302, CC14_303d, CC14_308a, CC14_308b, CC14_315a, CC14_320, CC14_321, CC14_322_1:CC14_322_6, CC14_324:CC14_329, CC14_341A, CC14_341C:CC14_341F, CC14_341M, CC14_350, CC14_367, CC14_387_1:CC14_387_13, CC14_418aa, CC14_422a:CC14_423bb, pid7_14, pid3_14, ideo5_14, pew_prayer_14, religpew_14, faminc_14, educ_14)) %>%
+  subset(select = c(birthyr_14, gender_14, race_14, CC12_412, CC14_412, CC14_302, CC14_303d, CC14_308a, CC14_308b, CC14_315a, CC14_320, CC14_321, CC14_322_1:CC14_322_6, CC14_324:CC14_329, CC14_341A, CC14_341C:CC14_341F, CC14_341M, CC14_350, CC14_367, CC14_387_1:CC14_387_13, CC14_418aa, CC14_422a:CC14_423bb, pid7_14, pid3_14, ideo5_14, pew_prayer_14, religpew_14, faminc_14, educ_14, StateAbbr_14)) %>%
   filter(CC14_303d < 5, pid7_14 < 9) %>%
   mutate("Age" = (2014 - birthyr_14))
 
-#Renaming variables in new datasets (no pres 12 yet).
+pres12_vars <- pres12 %>%
+  subset(select = c(birthyr_12, gender_12, race_12, CC10_317, CC12_410a, CC12_302, CC12_303d, CC12_308a, CC12_308b, CC12_315a, CC12_320, CC12_321, CC12_322_1:CC12_322_6, CC12_324:CC12_329, CC12_341A, CC12_341C:CC12_341F, CC12_341M, CC12_350, CC12_367, CC12_387_1:CC12_387_13, CC12_418aa, CC12_422a:CC12_423bb, pid7_12, pid3_12, ideo5_12, pew_prayer_12, religpew_12, faminc_12, educ_12, StateAbbr_12)) %>%
+  filter(CC12_303d < 5, pid7_12 < 9) %>%
+  mutate("Age" = (2012 - birthyr_12))
 
-house12_vars <- rename(house12_vars, housevote10 = CC10_412, housevote12 = CC12_412, economy12 = CC12_302, fedtax.retro12 = CC12_303d, obama.app12 = CC12_308a, congress.app12 = CC12_308b, guncontrol12 = CC12_320, climate12 = CC12_321, immg.status12 = CC12_322_1, immg.borderpatrol12 = CC12_322_2, immg.policeqs12 = CC12_322_3, immg.finebiz12 = CC12_322_4, immg.pubgoods12 = CC12_322_5, immg.citzdenial12 = CC12_322_6, abortion12 = CC12_324, jobs.envir12 = CC12_325, gaymarriage12 = CC12_326, affirmact12 = CC12_327, balbudget1.12 = CC12_328, balbudget2.12 = CC12_329, selfideo12 = CC12_341A, obamaideo12 = CC12_341C, romneyideo12 = CC12_341D, demideo12 = CC12_341E, repideo12 = CC12_341F, houserepideo12 = CC12_341M, partyreg12 = CC12_350, repHouserep12 = CC12_367, docvisit12 = CC12_387_1, newchild12 = CC12_387_10, moveoutchild12 = CC12_387_11, newmarriage12 = CC12_387_12, newdivorce12 = CC12_387_13, descriptrep.race.eth12 = CC12_418aa, AAraceresentA12 = CC12_422a, AAraceresentB12 = CC12_422b, Hispraceresent12 = CC12_423aa)
 
-house14_vars <- rename(house14_vars, housevote12 = CC12_412, housevote14 = CC14_412, economy14 = CC14_302, fedtax.retro14 = CC14_303d, obama.app14 = CC14_308a, congress.app14 = CC14_308b, guncontrol14 = CC14_320, climate14 = CC14_321, immg.status14 = CC14_322_1, immg.borderpatrol14 = CC14_322_2, immg.policeqs14 = CC14_322_3, immg.finebiz14 = CC14_322_4, immg.pubgoods14 = CC14_322_5, immg.citzdenial14 = CC14_322_6, abortion14 = CC14_324, jobs.envir14 = CC14_325, gaymarriage14 = CC14_326, affirmact14 = CC14_327, balbudget1.14 = CC14_328, balbudget2.14 = CC14_329, selfideo14 = CC14_341A, obamaideo14 = CC14_341C, demideo14 = CC14_341E, repideo14 = CC14_341F, houserepideo14 = CC14_341M, partyreg14 = CC14_350, repHouserep14 = CC14_367, docvisit14 = CC14_387_1, newchild14 = CC14_387_10, moveoutchild14 = CC14_387_11, newmarriage14 = CC14_387_12, newdivorce14 = CC14_387_13, descriptrep.race.eth14 = CC14_418aa, AAraceresentA14 = CC14_422a, AAraceresentB14 = CC14_422b, Hispraceresent14 = CC14_423aa)
+# Renaming variables in new datasets.
 
-#Some preliminary analysis
-#Regressing House 2012 Democratic to Republican switchers on demographic data
+house12_vars <- rename(house12_vars, housevote10 = CC10_412, housevote12 = CC12_412, economy12 = CC12_302, fedtax.retro12 = CC12_303d, obama.app12 = CC12_308a, congress.app12 = CC12_308b, guncontrol12 = CC12_320, climate12 = CC12_321, immg.status12 = CC12_322_1, immg.borderpatrol12 = CC12_322_2, immg.policeqs12 = CC12_322_3, immg.finebiz12 = CC12_322_4, immg.pubgoods12 = CC12_322_5, immg.citzdenial12 = CC12_322_6, abortion12 = CC12_324, jobs.envir12 = CC12_325, gaymarriage12 = CC12_326, affirmact12 = CC12_327, balbudget1.12 = CC12_328, balbudget2.12 = CC12_329, selfideo12 = CC12_341A, obamaideo12 = CC12_341C, romneyideo12 = CC12_341D, demideo12 = CC12_341E, repideo12 = CC12_341F, houserepideo12 = CC12_341M, partyreg12 = CC12_350, repHouserep12 = CC12_367, docvisit12 = CC12_387_1, newchild12 = CC12_387_10, moveoutchild12 = CC12_387_11, newmarriage12 = CC12_387_12, newdivorce12 = CC12_387_13, descriptrep.race.eth12 = CC12_418aa, AAraceresentA12 = CC12_422a, AAraceresentB12 = CC12_422b, Hispraceresent12 = CC12_423aa, state12 = StateAbbr_12)
+
+house14_vars <- rename(house14_vars, housevote12 = CC12_412, housevote14 = CC14_412, economy14 = CC14_302, fedtax.retro14 = CC14_303d, obama.app14 = CC14_308a, congress.app14 = CC14_308b, guncontrol14 = CC14_320, climate14 = CC14_321, immg.status14 = CC14_322_1, immg.borderpatrol14 = CC14_322_2, immg.policeqs14 = CC14_322_3, immg.finebiz14 = CC14_322_4, immg.pubgoods14 = CC14_322_5, immg.citzdenial14 = CC14_322_6, abortion14 = CC14_324, jobs.envir14 = CC14_325, gaymarriage14 = CC14_326, affirmact14 = CC14_327, balbudget1.14 = CC14_328, balbudget2.14 = CC14_329, selfideo14 = CC14_341A, obamaideo14 = CC14_341C, demideo14 = CC14_341E, repideo14 = CC14_341F, houserepideo14 = CC14_341M, partyreg14 = CC14_350, repHouserep14 = CC14_367, docvisit14 = CC14_387_1, newchild14 = CC14_387_10, moveoutchild14 = CC14_387_11, newmarriage14 = CC14_387_12, newdivorce14 = CC14_387_13, descriptrep.race.eth14 = CC14_418aa, AAraceresentA14 = CC14_422a, AAraceresentB14 = CC14_422b, Hispraceresent14 = CC14_423aa, state14 = StateAbbr_14)
+
+pres12_vars <- rename(pres12_vars, presvote08 = CC10_317, presvote12 = CC12_410a, economy12 = CC12_302, fedtax.retro12 = CC12_303d, obama.app12 = CC12_308a, congress.app12 = CC12_308b, guncontrol12 = CC12_320, climate12 = CC12_321, immg.status12 = CC12_322_1, immg.borderpatrol12 = CC12_322_2, immg.policeqs12 = CC12_322_3, immg.finebiz12 = CC12_322_4, immg.pubgoods12 = CC12_322_5, immg.citzdenial12 = CC12_322_6, abortion12 = CC12_324, jobs.envir12 = CC12_325, gaymarriage12 = CC12_326, affirmact12 = CC12_327, balbudget1.12 = CC12_328, balbudget2.12 = CC12_329, selfideo12 = CC12_341A, obamaideo12 = CC12_341C, romneyideo12 = CC12_341D, demideo12 = CC12_341E, repideo12 = CC12_341F, houserepideo12 = CC12_341M, partyreg12 = CC12_350, repHouserep12 = CC12_367, docvisit12 = CC12_387_1, newchild12 = CC12_387_10, moveoutchild12 = CC12_387_11, newmarriage12 = CC12_387_12, newdivorce12 = CC12_387_13, descriptrep.race.eth12 = CC12_418aa, AAraceresentA12 = CC12_422a, AAraceresentB12 = CC12_422b, Hispraceresent12 = CC12_423aa, state12 = StateAbbr_12)
+
+# Some preliminary analysis
+# Regressing House 2012 Democrat-to-Republican switchers on demographic data
 
 house12DtoR.demo <- lm(cbind(house12_vars$housevote10 == 1) ~ race_12 + gender_12 + Age + educ_12 + faminc_12, data = house12_vars)
 
 summary(house12DtoR.demo)
 
-# Regressing House 2012 Democratic to Republican switchers on policy positions
+# Regressing House 2012 Democrat-to-Republican switchers on policy positions
 
 house12DtoR.policy <- lm(cbind(house12_vars$housevote10 == 1) ~ guncontrol12 + climate12 + immg.status12 + immg.borderpatrol12 + immg.policeqs12 + immg.finebiz12 + immg.pubgoods12 + immg.citzdenial12 + abortion12 + jobs.envir12 + gaymarriage12 + affirmact12 + balbudget1.12 + balbudget2.12, data = house12_vars)
 
 summary(house12DtoR.policy)
+
+# Regressing House 2012 Democrat-to-Republican switchers on life events
+
+house12DtoR.life <- lm(cbind(house12_vars$housevote10 == 1) ~ docvisit12 + newchild12 + moveoutchild12 + newmarriage12 + newdivorce12, data = house12_vars)
+
+summary(house12DtoR.life)
+
+# Regressing House 2012 Democrat-to-Republican switchers on racial attitudes
+
+house12DtoR.raceatt <- lm(cbind(house12_vars$housevote10 == 1) ~ AAraceresentA12 + AAraceresentB12 + Hispraceresent12, data = house12_vars)
+
+summary(house12DtoR.raceatt)
+
+# Regressing President 2012 Democrat-to-Republican switchers on demographic data
+
+pres12DtoR.demo <- lm(cbind(pres12_vars$presvote12 == 2) ~ race_12 + gender_12 + Age + educ_12 + faminc_12, data = pres12_vars)
+
+summary(pres12DtoR.demo)
+
+# Regressing President 2012 Democrat-to-Republican switchers on policy positions
+
+pres12DtoR.policy <- lm(cbind(pres12_vars$presvote12 == 2) ~ guncontrol12 + climate12 + immg.status12 + immg.borderpatrol12 + immg.policeqs12 + immg.finebiz12 + immg.pubgoods12 + immg.citzdenial12 + abortion12 + jobs.envir12 + gaymarriage12 + affirmact12 + balbudget1.12 + balbudget2.12, data = pres12_vars)
+
+summary(pres12DtoR.policy)
+
+# Regressing President 2012 Democrat-to-Republican switchers on life events
+
+pres12DtoR.life <- lm(cbind(pres12_vars$presvote12 == 2) ~ docvisit12 + newchild12 + moveoutchild12 + newmarriage12 + newdivorce12, data = pres12_vars)
+
+summary(pres12DtoR.life)
+
+# Regressing President 2012 Democrat-to-Republican switchers on racial attitudes
+
+pres12DtoR.raceatt <- lm(cbind(pres12_vars$presvote12 == 2) ~ AAraceresentA12 + AAraceresentB12 + Hispraceresent12, data = pres12_vars)
+
+summary(pres12DtoR.raceatt)
+
+# Regressing McCain 2008 voters on racial attitudes towards Blacks
+
+McCain08_racialresentment <- lm(cbind(CCES_Panel_Full3waves_VV_V4$CC10_317 == 2) ~ CC10_422a + CC10_422b, data = CCES_Panel_Full3waves_VV_V4)
+
+summary(McCain08_racialresentment)
+
+# 2008 voters on racial attitudes towards Blacks and Hispanics, by vote for president
+
+CCES_Panel_Full3waves_VV_V4 %>%
+  filter(CC12_317 < 3, CC12_422a < 6) %>%
+  ggplot(aes(CC12_422a)) + geom_bar(aes(y = (..count..)/sum(..count..))) + geom_text(aes(label = scales::percent(..prop..), y= ..prop.. ), stat= "count", vjust = -.5) + xlab("Response") + ylab("Portion") + scale_x_continuous(breaks = c(1, 2, 3, 4, 5), label = c("Strongly agree", "Somewhat agree", "Neither agree nor disagree", "Somewhat disagree", "Strongly disagree")) + ggtitle("Racial Resentment of Blacks - 1", subtitle = "The Irish, Italians, Jews and many other minorities overcame prejudice and worked their way up. Blacks should do the same without any special favors.") + theme(axis.text.x = element_text(hjust = 1, angle = 30)) + facet_wrap(~ CC12_317, labeller = labeller(CC12_317 = c("1" = "'08 Obama Voters", "2" = "'08 McCain Voters")))
+
+CCES_Panel_Full3waves_VV_V4 %>%
+  filter(CC12_317 < 3, CC12_422b < 6) %>%
+  ggplot(aes(CC12_422b)) + geom_bar(aes(y = (..count..)/sum(..count..))) + geom_text(aes(label = scales::percent(..prop..), y= ..prop.. ), stat= "count", vjust = -.5) + xlab("Response") + ylab("Portion") + scale_x_continuous(breaks = c(1, 2, 3, 4, 5), label = c("Strongly agree", "Somewhat agree", "Neither agree nor disagree", "Somewhat disagree", "Strongly disagree")) + ggtitle("Racial Resentment of Blacks - 2", subtitle = "Generations of slavery and discrimination have created conditions that make it difficult for Blacks to work their way out of the lower class.") + theme(axis.text.x = element_text(hjust = 1, angle = 30)) + facet_wrap(~ CC12_317, labeller = labeller(CC12_317 = c("1" = "'08 Obama Voters", "2" = "'08 McCain Voters")))
+
+CCES_Panel_Full3waves_VV_V4 %>%
+  filter(CC12_317 < 3, CC12_423aa < 6) %>%
+  ggplot(aes(CC12_423aa)) + geom_bar(aes(y = (..count..)/sum(..count..))) + geom_text(aes(label = scales::percent(..prop..), y= ..prop.. ), stat= "count", vjust = -.5) + xlab("Response") + ylab("Portion") + scale_x_continuous(breaks = c(1, 2, 3, 4, 5), label = c("Strongly agree", "Somewhat agree", "Neither agree nor disagree", "Somewhat disagree", "Strongly disagree")) + ggtitle("Racial Resentment of Hispanics - 1", subtitle = "The Irish, Italians, Jews and many other minorities overcame prejudice and worked their way up. Hispanics should do the same without any special favors.") + theme(axis.text.x = element_text(hjust = 1, angle = 30)) + facet_wrap(~ CC12_317, labeller = labeller(CC12_317 = c("1" = "'08 Obama Voters", "2" = "'08 McCain Voters")))
+
+CCES_Panel_Full3waves_VV_V4 %>%
+  filter(CC12_317 < 3, CC12_423bb < 6) %>%
+  ggplot(aes(CC12_423bb)) + geom_bar(aes(y = (..count..)/sum(..count..))) + geom_text(aes(label = scales::percent(..prop..), y= ..prop.. ), stat= "count", vjust = -.5) + xlab("Response") + ylab("Portion") + scale_x_continuous(breaks = c(1, 2, 3, 4, 5), label = c("Strongly agree", "Somewhat agree", "Neither agree nor disagree", "Somewhat disagree", "Strongly disagree")) + ggtitle("Racial Resentment of Hispanics - 2", subtitle = "Generations of slavery and discrimination have created conditions that make it difficult for Hispanics to work their way out of the lower class.") + theme(axis.text.x = element_text(hjust = 1, angle = 30)) + facet_wrap(~ CC12_317, labeller = labeller(CC12_317 = c("1" = "'08 Obama Voters", "2" = "'08 McCain Voters")))
+
+# Change in Presidential Approval in general public vs changes in presidential approval in switchers
+
+CCES_Panel_Full3waves_VV_V4 %>%
+  filter(CC10_308a < 5, CC12_308a < 5, CC14_308a < 5) %>%
+  ggplot(aes(CC10_308a - CC14_308a)) + geom_bar() + geom_text(aes(label = scales::percent(..prop..), y= ..prop.. ), stat= "count", vjust = 1) + xlab("<-Negative Movement Positive->") + ylab("Respondents") + ggtitle("Change in Presidential Approval from 2010 to 2014: General Public")
+
+# Change in presidential approval in switchers
+
+CCES_Panel_Full3waves_VV_V4 %>%
+  filter(CC10_308a < 5, CC12_308a < 5, CC14_308a < 5, CC10_317 < 3, CC12_410a < 3, CC10_317 != CC12_410a) %>%
+  ggplot(aes(CC10_308a - CC14_308a)) + geom_bar() + geom_text(aes(label = scales::percent(..prop..), y= ..prop.. ), stat= "count", vjust = 1) + xlab("<-Negative Movement Positive->") + ylab("Respondents") + ggtitle("Change in Presidential Approval from 2010 to 2014: Switchers")
+
+# Change in presidential approval for D-to-R switchers
+
+CCES_Panel_Full3waves_VV_V4 %>%
+  filter(CC10_308a < 5, CC12_308a < 5, CC14_308a < 5, CC10_317 == 1, CC12_410a == 2) %>%
+  ggplot(aes(CC10_308a - CC14_308a)) + geom_bar() + geom_text(aes(label = scales::percent(..prop..), y= ..prop.. ), stat= "count", vjust = 1) + xlab("<-Negative Movement Positive->") + ylab("Respondents") + ggtitle("Change in Presidential Approval from 2010 to 2014: Democrat-to-Republican Switchers")
+
+# Change in presidential approval for R-to-D switchers
+
+CCES_Panel_Full3waves_VV_V4 %>%
+  filter(CC10_308a < 5, CC12_308a < 5, CC14_308a < 5, CC10_317 == 2, CC12_410a == 1) %>%
+  ggplot(aes(CC10_308a - CC14_308a)) + geom_bar() + geom_text(aes(label = scales::percent(..prop..), y= ..prop.. ), stat= "count", vjust = 1) + xlab("<-Negative Movement Positive->") + ylab("Respondents") + ggtitle("Change in Presidential Approval from 2010 to 2014: Republican-to-Democrat Switchers")
+
 ```
-
-
-
