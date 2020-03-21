@@ -119,19 +119,19 @@ summary(McCain08_racialresentment)
 
 CCES_Panel_Full3waves_VV_V4 %>%
   filter(CC12_317 < 3, CC12_422a < 6) %>%
-  ggplot(aes(CC12_422a)) + geom_bar(aes(y = (..count..)/sum(..count..))) + geom_text(aes(label = scales::percent(..prop..), y= ..prop.. ), stat= "count", vjust = -.5) + xlab("Response") + ylab("Portion") + scale_x_continuous(breaks = c(1, 2, 3, 4, 5), label = c("Strongly agree", "Somewhat agree", "Neither agree nor disagree", "Somewhat disagree", "Strongly disagree")) + ggtitle("Racial Resentment of Blacks - 1", subtitle = "The Irish, Italians, Jews and many other minorities overcame prejudice and worked their way up. Blacks should do the same without any special favors.") + theme(axis.text.x = element_text(hjust = 1, angle = 30)) + facet_wrap(~ CC12_317, labeller = labeller(CC12_317 = c("1" = "'08 Obama Voters", "2" = "'08 McCain Voters")))
+  ggplot(aes(CC12_422a)) + geom_bar(aes(y = (..count..)/sum(..count..))) + geom_text(aes(label = scales::percent(..prop..), y= ..prop.. ), stat= "count", vjust = -.5) + xlab("Response") + ylab("Portion") + scale_x_continuous(breaks = c(1, 2, 3, 4, 5), label = c("Strongly agree", "Somewhat agree", "Neither agree nor disagree", "Somewhat disagree", "Strongly disagree")) + ggtitle("Racial Resentment of Blacks - 1", subtitle = "The Irish, Italians, Jews and many other minorities overcame prejudice and worked their way up.\nBlacks should do the same without any special favors.") + theme(axis.text.x = element_text(hjust = 1, angle = 30)) + facet_wrap(~ CC12_317, labeller = labeller(CC12_317 = c("1" = "'08 Obama Voters", "2" = "'08 McCain Voters")))
 
 CCES_Panel_Full3waves_VV_V4 %>%
   filter(CC12_317 < 3, CC12_422b < 6) %>%
-  ggplot(aes(CC12_422b)) + geom_bar(aes(y = (..count..)/sum(..count..))) + geom_text(aes(label = scales::percent(..prop..), y= ..prop.. ), stat= "count", vjust = -.5) + xlab("Response") + ylab("Portion") + scale_x_continuous(breaks = c(1, 2, 3, 4, 5), label = c("Strongly agree", "Somewhat agree", "Neither agree nor disagree", "Somewhat disagree", "Strongly disagree")) + ggtitle("Racial Resentment of Blacks - 2", subtitle = "Generations of slavery and discrimination have created conditions that make it difficult for Blacks to work their way out of the lower class.") + theme(axis.text.x = element_text(hjust = 1, angle = 30)) + facet_wrap(~ CC12_317, labeller = labeller(CC12_317 = c("1" = "'08 Obama Voters", "2" = "'08 McCain Voters")))
+  ggplot(aes(CC12_422b)) + geom_bar(aes(y = (..count..)/sum(..count..))) + geom_text(aes(label = scales::percent(..prop..), y= ..prop.. ), stat= "count", vjust = -.5) + xlab("Response") + ylab("Portion") + scale_x_continuous(breaks = c(1, 2, 3, 4, 5), label = c("Strongly agree", "Somewhat agree", "Neither agree nor disagree", "Somewhat disagree", "Strongly disagree")) + ggtitle("Racial Resentment of Blacks - 2", subtitle = "Generations of slavery and discrimination have created conditions that make it difficult for Blacks\nto work their way out of the lower class.") + theme(axis.text.x = element_text(hjust = 1, angle = 30)) + facet_wrap(~ CC12_317, labeller = labeller(CC12_317 = c("1" = "'08 Obama Voters", "2" = "'08 McCain Voters")))
 
 CCES_Panel_Full3waves_VV_V4 %>%
   filter(CC12_317 < 3, CC12_423aa < 6) %>%
-  ggplot(aes(CC12_423aa)) + geom_bar(aes(y = (..count..)/sum(..count..))) + geom_text(aes(label = scales::percent(..prop..), y= ..prop.. ), stat= "count", vjust = -.5) + xlab("Response") + ylab("Portion") + scale_x_continuous(breaks = c(1, 2, 3, 4, 5), label = c("Strongly agree", "Somewhat agree", "Neither agree nor disagree", "Somewhat disagree", "Strongly disagree")) + ggtitle("Racial Resentment of Hispanics - 1", subtitle = "The Irish, Italians, Jews and many other minorities overcame prejudice and worked their way up. Hispanics should do the same without any special favors.") + theme(axis.text.x = element_text(hjust = 1, angle = 30)) + facet_wrap(~ CC12_317, labeller = labeller(CC12_317 = c("1" = "'08 Obama Voters", "2" = "'08 McCain Voters")))
+  ggplot(aes(CC12_423aa)) + geom_bar(aes(y = (..count..)/sum(..count..))) + geom_text(aes(label = scales::percent(..prop..), y= ..prop.. ), stat= "count", vjust = -.5) + xlab("Response") + ylab("Portion") + scale_x_continuous(breaks = c(1, 2, 3, 4, 5), label = c("Strongly agree", "Somewhat agree", "Neither agree nor disagree", "Somewhat disagree", "Strongly disagree")) + ggtitle("Racial Resentment of Hispanics - 1", subtitle = "The Irish, Italians, Jews and many other minorities overcame prejudice and worked their way up.\nHispanics should do the same without any special favors.") + theme(axis.text.x = element_text(hjust = 1, angle = 30)) + facet_wrap(~ CC12_317, labeller = labeller(CC12_317 = c("1" = "'08 Obama Voters", "2" = "'08 McCain Voters")))
 
 CCES_Panel_Full3waves_VV_V4 %>%
   filter(CC12_317 < 3, CC12_423bb < 6) %>%
-  ggplot(aes(CC12_423bb)) + geom_bar(aes(y = (..count..)/sum(..count..))) + geom_text(aes(label = scales::percent(..prop..), y= ..prop.. ), stat= "count", vjust = -.5) + xlab("Response") + ylab("Portion") + scale_x_continuous(breaks = c(1, 2, 3, 4, 5), label = c("Strongly agree", "Somewhat agree", "Neither agree nor disagree", "Somewhat disagree", "Strongly disagree")) + ggtitle("Racial Resentment of Hispanics - 2", subtitle = "Generations of slavery and discrimination have created conditions that make it difficult for Hispanics to work their way out of the lower class.") + theme(axis.text.x = element_text(hjust = 1, angle = 30)) + facet_wrap(~ CC12_317, labeller = labeller(CC12_317 = c("1" = "'08 Obama Voters", "2" = "'08 McCain Voters")))
+  ggplot(aes(CC12_423bb)) + geom_bar(aes(y = (..count..)/sum(..count..))) + geom_text(aes(label = scales::percent(..prop..), y= ..prop.. ), stat= "count", vjust = -.5) + xlab("Response") + ylab("Portion") + scale_x_continuous(breaks = c(1, 2, 3, 4, 5), label = c("Strongly agree", "Somewhat agree", "Neither agree nor disagree", "Somewhat disagree", "Strongly disagree")) + ggtitle("Racial Resentment of Hispanics - 2", subtitle = "Generations of slavery and discrimination have created conditions that make it difficult for\nHispanics to work their way out of the lower class.") + theme(axis.text.x = element_text(hjust = 1, angle = 30)) + facet_wrap(~ CC12_317, labeller = labeller(CC12_317 = c("1" = "'08 Obama Voters", "2" = "'08 McCain Voters")))
 
 # Change in Presidential Approval in general public vs changes in presidential approval in switchers
 
@@ -149,12 +149,26 @@ CCES_Panel_Full3waves_VV_V4 %>%
 
 CCES_Panel_Full3waves_VV_V4 %>%
   filter(CC10_308a < 5, CC12_308a < 5, CC14_308a < 5, CC10_317 == 1, CC12_410a == 2) %>%
-  ggplot(aes(CC10_308a - CC14_308a)) + geom_bar() + geom_text(aes(label = scales::percent(..prop..), y= ..prop.. ), stat= "count", vjust = 1) + xlab("<-Negative Movement Positive->") + ylab("Respondents") + ggtitle("Change in Presidential Approval from 2010 to 2014: Democrat-to-Republican Switchers")
+  ggplot(aes(CC10_308a - CC14_308a)) + geom_bar() + geom_text(aes(label = scales::percent(..prop..), y= ..prop.. ), stat= "count", vjust = 1) + xlab("<-Negative Movement Positive->") + ylab("Respondents") + ggtitle("Change in Presidential Approval from 2010 to 2014: Dem-to-Rep Switchers")
 
 # Change in presidential approval for R-to-D switchers
 
 CCES_Panel_Full3waves_VV_V4 %>%
   filter(CC10_308a < 5, CC12_308a < 5, CC14_308a < 5, CC10_317 == 2, CC12_410a == 1) %>%
-  ggplot(aes(CC10_308a - CC14_308a)) + geom_bar() + geom_text(aes(label = scales::percent(..prop..), y= ..prop.. ), stat= "count", vjust = 1) + xlab("<-Negative Movement Positive->") + ylab("Respondents") + ggtitle("Change in Presidential Approval from 2010 to 2014: Republican-to-Democrat Switchers")
+  ggplot(aes(CC10_308a - CC14_308a)) + geom_bar() + geom_text(aes(label = scales::percent(..prop..), y= ..prop.. ), stat= "count", vjust = 1) + xlab("<-Negative Movement Positive->") + ylab("Respondents") + ggtitle("Change in Presidential Approval from 2010 to 2014: Rep-to-Dem Switchers")
+
+
+# Who are these switchers?
+# By race:
+
+ggplot(pres12_vars, aes(race_12, race_12/sum(race_12), fill = reorder(presvote12, race_12/sum(race_12)))) + geom_col() + scale_y_continuous(labels = scales::percent) + xlab("Race of Switchers") + ylab("Percentage of Switchers") + ggtitle("President 2012 Switchers by Race") + scale_x_continuous(breaks = c(1, 2, 3, 4, 5, 6, 7), label = c("White", "Black", "Hispanic", "Asian", "Native American", "Mixed", "Other")) + theme(panel.background = element_rect("white"), axis.line.x.bottom = element_line("black"), axis.line.y.left = element_line("black")) + scale_fill_manual("Voter for", labels = c("Romney", "Obama"), values=c("red", "blue"))
+
+# By sex:
+
+ggplot(pres12_vars, aes(gender_12, gender_12/sum(gender_12), fill = reorder(presvote12, gender_12/sum(gender_12)))) + geom_col() + scale_y_continuous(labels = scales::percent) + xlab("Gender of Switchers") + ylab("Percentage of Switchers") + ggtitle("President 2012 Switchers by Gender") + scale_x_continuous(breaks = c(1, 2), label = c("Male", "Female")) + theme(panel.background = element_rect("white"), axis.line.x.bottom = element_line("black"), axis.line.y.left = element_line("black")) + scale_fill_manual("Voter for", labels = c("Romney", "Obama"), values=c("red", "blue"))
+
+# By party:
+
+ggplot(pres12_vars, aes(partyreg12, partyreg12/sum(partyreg12), fill = reorder(presvote12, partyreg12/sum(partyreg12)))) + geom_col() + scale_y_continuous(labels = scales::percent) + xlab("Party of Switchers") + ylab("Percentage of Switchers") + ggtitle("President 2012 Switchers by Party") + scale_x_continuous(breaks = c(1, 2, 3, 4), label = c("None/Ind/Didn't Say", "Democratic", "Republican", "Other")) + theme(panel.background = element_rect("white"), axis.line.x.bottom = element_line("black"), axis.line.y.left = element_line("black")) + scale_fill_manual("Voter for", labels = c("Romney", "Obama"), values=c("red", "blue"))
 
 ```
