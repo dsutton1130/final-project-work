@@ -61,55 +61,55 @@ house14_vars <- rename(house14_vars, housevote12 = CC12_412, housevote14 = CC14_
 pres12_vars <- rename(pres12_vars, presvote08 = CC10_317, presvote12 = CC12_410a, economy12 = CC12_302, fedtax.retro12 = CC12_303d, obama.app12 = CC12_308a, congress.app12 = CC12_308b, guncontrol12 = CC12_320, climate12 = CC12_321, immg.status12 = CC12_322_1, immg.borderpatrol12 = CC12_322_2, immg.policeqs12 = CC12_322_3, immg.finebiz12 = CC12_322_4, immg.pubgoods12 = CC12_322_5, immg.citzdenial12 = CC12_322_6, abortion12 = CC12_324, jobs.envir12 = CC12_325, gaymarriage12 = CC12_326, affirmact12 = CC12_327, balbudget1.12 = CC12_328, balbudget2.12 = CC12_329, selfideo12 = CC12_341A, obamaideo12 = CC12_341C, romneyideo12 = CC12_341D, demideo12 = CC12_341E, repideo12 = CC12_341F, houserepideo12 = CC12_341M, partyreg12 = CC12_350, repHouserep12 = CC12_367, docvisit12 = CC12_387_1, newchild12 = CC12_387_10, moveoutchild12 = CC12_387_11, newmarriage12 = CC12_387_12, newdivorce12 = CC12_387_13, descriptrep.race.eth12 = CC12_418aa, AAraceresentA12 = CC12_422a, AAraceresentB12 = CC12_422b, Hispraceresent12 = CC12_423aa, state12 = StateAbbr_12)
 
 # Some preliminary analysis
-# Regressing House 2012 Democrat-to-Republican switchers on demographic data
+  # Regressing House 2012 Democrat-to-Republican switchers on demographic data
 
 house12DtoR.demo <- lm(cbind(house12_vars$housevote10 == 1) ~ race_12 + gender_12 + Age + educ_12 + faminc_12, data = house12_vars)
 
 summary(house12DtoR.demo)
 
-# Regressing House 2012 Democrat-to-Republican switchers on policy positions
+  # Regressing House 2012 Democrat-to-Republican switchers on policy positions
 
 house12DtoR.policy <- lm(cbind(house12_vars$housevote10 == 1) ~ guncontrol12 + climate12 + immg.status12 + immg.borderpatrol12 + immg.policeqs12 + immg.finebiz12 + immg.pubgoods12 + immg.citzdenial12 + abortion12 + jobs.envir12 + gaymarriage12 + affirmact12 + balbudget1.12 + balbudget2.12, data = house12_vars)
 
 summary(house12DtoR.policy)
 
-# Regressing House 2012 Democrat-to-Republican switchers on life events
+  # Regressing House 2012 Democrat-to-Republican switchers on life events
 
 house12DtoR.life <- lm(cbind(house12_vars$housevote10 == 1) ~ docvisit12 + newchild12 + moveoutchild12 + newmarriage12 + newdivorce12, data = house12_vars)
 
 summary(house12DtoR.life)
 
-# Regressing House 2012 Democrat-to-Republican switchers on racial attitudes
+  # Regressing House 2012 Democrat-to-Republican switchers on racial attitudes
 
 house12DtoR.raceatt <- lm(cbind(house12_vars$housevote10 == 1) ~ AAraceresentA12 + AAraceresentB12 + Hispraceresent12, data = house12_vars)
 
 summary(house12DtoR.raceatt)
 
-# Regressing President 2012 Democrat-to-Republican switchers on demographic data
+  # Regressing President 2012 Democrat-to-Republican switchers on demographic data
 
 pres12DtoR.demo <- lm(cbind(pres12_vars$presvote12 == 2) ~ race_12 + gender_12 + Age + educ_12 + faminc_12, data = pres12_vars)
 
 summary(pres12DtoR.demo)
 
-# Regressing President 2012 Democrat-to-Republican switchers on policy positions
+  # Regressing President 2012 Democrat-to-Republican switchers on policy positions
 
 pres12DtoR.policy <- lm(cbind(pres12_vars$presvote12 == 2) ~ guncontrol12 + climate12 + immg.status12 + immg.borderpatrol12 + immg.policeqs12 + immg.finebiz12 + immg.pubgoods12 + immg.citzdenial12 + abortion12 + jobs.envir12 + gaymarriage12 + affirmact12 + balbudget1.12 + balbudget2.12, data = pres12_vars)
 
 summary(pres12DtoR.policy)
 
-# Regressing President 2012 Democrat-to-Republican switchers on life events
+  # Regressing President 2012 Democrat-to-Republican switchers on life events
 
 pres12DtoR.life <- lm(cbind(pres12_vars$presvote12 == 2) ~ docvisit12 + newchild12 + moveoutchild12 + newmarriage12 + newdivorce12, data = pres12_vars)
 
 summary(pres12DtoR.life)
 
-# Regressing President 2012 Democrat-to-Republican switchers on racial attitudes
+  # Regressing President 2012 Democrat-to-Republican switchers on racial attitudes
 
 pres12DtoR.raceatt <- lm(cbind(pres12_vars$presvote12 == 2) ~ AAraceresentA12 + AAraceresentB12 + Hispraceresent12, data = pres12_vars)
 
 summary(pres12DtoR.raceatt)
 
-# Regressing McCain 2008 voters on racial attitudes towards Blacks
+  # Regressing McCain 2008 voters on racial attitudes towards Blacks
 
 McCain08_racialresentment <- lm(cbind(CCES_Panel_Full3waves_VV_V4$CC10_317 == 2) ~ CC10_422a + CC10_422b, data = CCES_Panel_Full3waves_VV_V4)
 
@@ -156,12 +156,18 @@ CCES_Panel_Full3waves_VV_V4 %>%
 CCES_Panel_Full3waves_VV_V4 %>%
   filter(CC10_308a < 5, CC12_308a < 5, CC14_308a < 5, CC10_317 == 2, CC12_410a == 1) %>%
   ggplot(aes(CC10_308a - CC14_308a)) + geom_bar() + geom_text(aes(label = scales::percent(..prop..), y= ..prop.. ), stat= "count", vjust = 1) + xlab("<-Negative Movement Positive->") + ylab("Respondents") + ggtitle("Change in Presidential Approval from 2010 to 2014: Rep-to-Dem Switchers")
+```
 
+-----------------------------
+
+# Milestone 5
+
+```{r, echo = FALSE}
 
 # Who are these switchers?
 
   # Demographics:
-
+    
     # By race:
 
 ggplot(pres12_vars, aes(race_12, race_12/sum(race_12), fill = reorder(presvote12, race_12/sum(race_12)))) + geom_col() + scale_y_continuous(labels = scales::percent) + xlab("Race of Switchers") + ylab("Percentage of Switchers") + ggtitle("President 2012 Switchers by Race") + scale_x_continuous(breaks = c(1, 2, 3, 4, 5, 6, 7), label = c("White", "Black", "Hispanic", "Asian", "Native American", "Mixed", "Other")) + theme(panel.background = element_rect("white"), axis.line.x.bottom = element_line("black"), axis.line.y.left = element_line("black")) + scale_fill_manual("Voter for", labels = c("Romney", "Obama"), values=c("red", "blue"))
@@ -191,7 +197,7 @@ pres12_vars %>%
   filter(partyreg12 < 5) %>%
   ggplot(aes(partyreg12, partyreg12/sum(partyreg12), fill = reorder(presvote12, partyreg12/sum(partyreg12)))) + geom_col() + scale_y_continuous(labels = scales::percent) + xlab("Party of Switchers") + ylab("Percentage of Switchers") + ggtitle("President 2012 Switchers by Party") + scale_x_continuous(breaks = c(1, 2, 3, 4), label = c("None/Ind/Didn't Say", "Democratic", "Republican", "Other")) + theme(panel.background = element_rect("white"), axis.line.x.bottom = element_line("black"), axis.line.y.left = element_line("black")) + scale_fill_manual("Voter for", labels = c("Romney", "Obama"), values=c("red", "blue"))
 
-    # By income (making new variable - "income" first)
+    # By income (making new variable - "income" - first)
 
 pres12_vars <- pres12_vars %>%
   mutate(income = case_when(faminc_12 >= 1 & faminc_12 <= 3 ~ '1', faminc_12 >= 4 & faminc_12 <= 6 ~ '2', faminc_12 >= 7 & faminc_12 <= 9 ~ '3', faminc_12 >= 10 & faminc_12 <= 11 ~ '4', faminc_12 >= 12 & faminc_12 < 33 ~ '5', faminc_12 >= 32 ~ '6'))
@@ -199,6 +205,10 @@ pres12_vars <- pres12_vars %>%
 pres12_vars$income <- as.numeric(pres12_vars$income)
 
 ggplot(pres12_vars, aes(income, income/sum(income), fill = reorder(presvote12, income/sum(income)))) + geom_col() + scale_y_continuous(labels = scales::percent) + xlab("Income of Switchers in US Dollars") + ylab("Percentage of Switchers") + ggtitle("President 2012 Switchers by Income") + scale_x_continuous(breaks = c(1, 2, 3, 4, 5, 6), label = c("0-29,999", "30,000-59,999", "60,000-99,999", "100,000-149,999", "150,000+", "Didn't say/Skipped/Not asked")) + theme(panel.background = element_rect("white"), axis.line.x.bottom = element_line("black"), axis.line.y.left = element_line("black")) + scale_fill_manual("Voter for", labels = c("Romney", "Obama"), values=c("red", "blue")) + coord_flip()
+
+ # By policy preferences
+
+      
 
 
 
