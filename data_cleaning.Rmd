@@ -12,14 +12,20 @@ library(tidyverse)
 library(haven)
 library(janitor)
 library(rvest)
+options(scipen=999)
 load("~/CCES.RData")
-ANES <- read_dta("C:/Users/david/Downloads/ANES.dta")
-```
 
+# Cleaning CCES Data. First, copying the dataset.
 
-```{r, echo = FALSE}
+CCES_Panel <- CCES_Panel_Full3waves_VV_V4
 
-# Cleaning CCES Data. First, 2008-2012 Presidential switchers:
+# Then, finding the switchers in 2010-2014 CCES panel
+
+CCES_Panel$pres.switch <- if_else((CCES_Panel$CC10_317 < 3 & CCES_Panel$CC12_410a < 3 & CCES_Panel$CC10_317 != CCES_Panel$CC12_410a), 1, 0)
+
+# Now, isolating:
+
+# 2008-2012 Presidential switchers:
 
 pres12 <- CCES_Panel_Full3waves_VV_V4 %>%
   filter(CC10_317 < 3, CC12_410a < 3, CC10_317 != CC12_410a)
@@ -34,23 +40,33 @@ house12 <- CCES_Panel_Full3waves_VV_V4 %>%
 house14 <- CCES_Panel_Full3waves_VV_V4 %>%
   filter(CC12_412 < 3, CC14_412 < 3, CC12_412 != CC14_412)
 
+# Making one dataset of House of R switchers
+
+house.switchers <- full_join(house12, house14)
+
+# Making one dataset of House of R and Pres '08-'12
+
+switchers <- full_join(house.switchers, pres12)
+
 # Now, writing code to drop variables we don't want/keep variables we want, filter a couple variables, renaming the variables and creating an "Age" column for each new dataset derived from the CCES (no pres12 yet).
 
 house12_vars <- house12 %>%
-  subset(select = c(birthyr_12, gender_12, race_12, CC10_412, CC12_412, CC12_302, CC12_303d, CC12_308a, CC12_308b, CC12_315a, CC12_320, CC12_321, CC12_322_1:CC12_322_6, CC12_324:CC12_329, CC12_341A, CC12_341C:CC12_341F, CC12_341M, CC12_350, CC12_367, CC12_387_1:CC12_387_13, CC12_418aa, CC12_422a:CC12_423bb, pid7_12, pid3_12, ideo5_12, pew_prayer_12, religpew_12, faminc_12, educ_12, StateAbbr_12)) %>%
+  subset(select = c(caseid, birthyr_12, gender_12, race_12, CC10_412, CC12_412, CC12_302, CC12_303d, CC12_308a, CC12_308b, CC12_315a, CC12_320, CC12_321, CC12_322_1:CC12_322_6, CC12_324:CC12_329, CC12_341A, CC12_341C:CC12_341F, CC12_341M, CC12_350, CC12_367, CC12_387_1:CC12_387_13, CC12_418aa, CC12_422a:CC12_423bb, pid7_12, pid3_12, ideo5_12, pew_prayer_12, religpew_12, faminc_12, educ_12, StateAbbr_12)) %>%
   filter(CC12_303d < 5, pid7_12 < 9) %>%
   mutate("Age" = (2012 - birthyr_12))
+# Obs: 472 to 470
 
 house14_vars <- house14 %>%
-  subset(select = c(birthyr_14, gender_14, race_14, CC12_412, CC14_412, CC14_302, CC14_303d, CC14_308a, CC14_308b, CC14_315a, CC14_320, CC14_321, CC14_322_1:CC14_322_6, CC14_324:CC14_329, CC14_341A, CC14_341C:CC14_341F, CC14_341M, CC14_350, CC14_367, CC14_387_1:CC14_387_13, CC14_418aa, CC14_422a:CC14_423bb, pid7_14, pid3_14, ideo5_14, pew_prayer_14, religpew_14, faminc_14, educ_14, StateAbbr_14)) %>%
+  subset(select = c(caseid, birthyr_14, gender_14, race_14, CC12_412, CC14_412, CC14_302, CC14_303d, CC14_308a, CC14_308b, CC14_315a, CC14_320, CC14_321, CC14_322_1:CC14_322_6, CC14_324:CC14_329, CC14_341A, CC14_341C:CC14_341F, CC14_341M, CC14_350, CC14_367, CC14_387_1:CC14_387_13, CC14_418aa, CC14_422a:CC14_423bb, pid7_14, pid3_14, ideo5_14, pew_prayer_14, religpew_14, faminc_14, educ_14, StateAbbr_14)) %>%
   filter(CC14_303d < 5, pid7_14 < 9) %>%
   mutate("Age" = (2014 - birthyr_14))
+# Obs: 460 to 441
 
 pres12_vars <- pres12 %>%
-  subset(select = c(birthyr_12, gender_12, race_12, CC10_317, CC12_410a, CC12_302, CC12_303d, CC12_308a, CC12_308b, CC12_315a, CC12_320, CC12_321, CC12_322_1:CC12_322_6, CC12_324:CC12_329, CC12_341A, CC12_341C:CC12_341F, CC12_341M, CC12_350, CC12_367, CC12_387_1:CC12_387_13, CC12_418aa, CC12_422a:CC12_423bb, pid7_12, pid3_12, ideo5_12, pew_prayer_12, religpew_12, faminc_12, educ_12, StateAbbr_12)) %>%
+  subset(select = c(caseid, birthyr_12, gender_12, race_12, CC10_317, CC12_410a, CC12_302, CC12_303d, CC12_308a, CC12_308b, CC12_315a, CC12_320, CC12_321, CC12_322_1:CC12_322_6, CC12_324:CC12_329, CC12_341A, CC12_341C:CC12_341F, CC12_341M, CC12_350, CC12_367, CC12_387_1:CC12_387_13, CC12_418aa, CC12_422a:CC12_423bb, pid7_12, pid3_12, ideo5_12, pew_prayer_12, religpew_12, faminc_12, educ_12, StateAbbr_12)) %>%
   filter(CC12_303d < 5, pid7_12 < 9) %>%
   mutate("Age" = (2012 - birthyr_12))
-
+# Obs: 315 to 313
 
 # Renaming variables in new datasets.
 
@@ -59,6 +75,14 @@ house12_vars <- rename(house12_vars, housevote10 = CC10_412, housevote12 = CC12_
 house14_vars <- rename(house14_vars, housevote12 = CC12_412, housevote14 = CC14_412, economy14 = CC14_302, fedtax.retro14 = CC14_303d, obama.app14 = CC14_308a, congress.app14 = CC14_308b, guncontrol14 = CC14_320, climate14 = CC14_321, immg.status14 = CC14_322_1, immg.borderpatrol14 = CC14_322_2, immg.policeqs14 = CC14_322_3, immg.finebiz14 = CC14_322_4, immg.pubgoods14 = CC14_322_5, immg.citzdenial14 = CC14_322_6, abortion14 = CC14_324, jobs.envir14 = CC14_325, gaymarriage14 = CC14_326, affirmact14 = CC14_327, balbudget1.14 = CC14_328, balbudget2.14 = CC14_329, selfideo14 = CC14_341A, obamaideo14 = CC14_341C, demideo14 = CC14_341E, repideo14 = CC14_341F, houserepideo14 = CC14_341M, partyreg14 = CC14_350, repHouserep14 = CC14_367, docvisit14 = CC14_387_1, newchild14 = CC14_387_10, moveoutchild14 = CC14_387_11, newmarriage14 = CC14_387_12, newdivorce14 = CC14_387_13, descriptrep.race.eth14 = CC14_418aa, AAraceresentA14 = CC14_422a, AAraceresentB14 = CC14_422b, Hispraceresent14 = CC14_423aa, state14 = StateAbbr_14)
 
 pres12_vars <- rename(pres12_vars, presvote08 = CC10_317, presvote12 = CC12_410a, economy12 = CC12_302, fedtax.retro12 = CC12_303d, obama.app12 = CC12_308a, congress.app12 = CC12_308b, guncontrol12 = CC12_320, climate12 = CC12_321, immg.status12 = CC12_322_1, immg.borderpatrol12 = CC12_322_2, immg.policeqs12 = CC12_322_3, immg.finebiz12 = CC12_322_4, immg.pubgoods12 = CC12_322_5, immg.citzdenial12 = CC12_322_6, abortion12 = CC12_324, jobs.envir12 = CC12_325, gaymarriage12 = CC12_326, affirmact12 = CC12_327, balbudget1.12 = CC12_328, balbudget2.12 = CC12_329, selfideo12 = CC12_341A, obamaideo12 = CC12_341C, romneyideo12 = CC12_341D, demideo12 = CC12_341E, repideo12 = CC12_341F, houserepideo12 = CC12_341M, partyreg12 = CC12_350, repHouserep12 = CC12_367, docvisit12 = CC12_387_1, newchild12 = CC12_387_10, moveoutchild12 = CC12_387_11, newmarriage12 = CC12_387_12, newdivorce12 = CC12_387_13, descriptrep.race.eth12 = CC12_418aa, AAraceresentA12 = CC12_422a, AAraceresentB12 = CC12_422b, Hispraceresent12 = CC12_423aa, state12 = StateAbbr_12)
+
+CCES_Panel.vars <- rename(CCES_Panel, presvote08 = CC10_317, presvote12 = CC12_410a, economy12 = CC12_302, fedtax.retro12 = CC12_303d, obama.app12 = CC12_308a, congress.app12 = CC12_308b, guncontrol12 = CC12_320, climate12 = CC12_321, immg.status12 = CC12_322_1, immg.borderpatrol12 = CC12_322_2, immg.policeqs12 = CC12_322_3, immg.finebiz12 = CC12_322_4, immg.pubgoods12 = CC12_322_5, immg.citzdenial12 = CC12_322_6, abortion12 = CC12_324, jobs.envir12 = CC12_325, gaymarriage12 = CC12_326, affirmact12 = CC12_327, balbudget1.12 = CC12_328, balbudget2.12 = CC12_329, selfideo12 = CC12_341A, obamaideo12 = CC12_341C, romneyideo12 = CC12_341D, demideo12 = CC12_341E, repideo12 = CC12_341F, houserepideo12 = CC12_341M, partyreg12 = CC12_350, repHouserep12 = CC12_367, docvisit12 = CC12_387_1, newchild12 = CC12_387_10, moveoutchild12 = CC12_387_11, newmarriage12 = CC12_387_12, newdivorce12 = CC12_387_13, descriptrep.race.eth12 = CC12_418aa, AAraceresentA12 = CC12_422a, AAraceresentB12 = CC12_422b, Hispraceresent12 = CC12_423aa, state12 = StateAbbr_12)
+
+CCES_Panel.vars <- CCES_Panel.vars %>%
+  mutate("Age.12" = (2012 - birthyr_12), "Age.14" = (2014 - birthyr_14))
+```
+
+```{r, echo = FALSE}
 
 # Some preliminary analysis
   # Regressing House 2012 Democrat-to-Republican switchers on demographic data
@@ -114,6 +138,11 @@ summary(pres12DtoR.raceatt)
 McCain08_racialresentment <- lm(cbind(CCES_Panel_Full3waves_VV_V4$CC10_317 == 2) ~ CC10_422a + CC10_422b, data = CCES_Panel_Full3waves_VV_V4)
 
 summary(McCain08_racialresentment)
+```
+
+```{r, echo = FALSE}
+
+# some plots
 
 # 2008 voters on racial attitudes towards Blacks and Hispanics, by vote for president
 
@@ -164,6 +193,22 @@ CCES_Panel_Full3waves_VV_V4 %>%
 
 ```{r, echo = FALSE}
 
+## Pres 08-12
+
+# Who switches? Regressing switching on data points
+
+prob.pres.switch <- lm(cbind(CCES_Panel.vars$pres.switch == 1) ~ race_12 + gender_12 + Age.12 + educ_12 + faminc_12 + guncontrol12 + climate12 + immg.status12 + immg.borderpatrol12 + immg.policeqs12 + immg.finebiz12 + immg.pubgoods12 + immg.citzdenial12 + abortion12 + jobs.envir12 + gaymarriage12 + affirmact12 + balbudget1.12 + balbudget2.12 + docvisit12 + newchild12 + moveoutchild12 + newmarriage12 + newdivorce12 + AAraceresentA12 + AAraceresentB12 + Hispraceresent12, data = CCES_Panel.vars)
+
+prob.pres.switch
+
+prob.presDtoR.switch <- lm(cbind(CCES_Panel.vars$presvote12 == 2 & CCES_Panel.vars$presvote08 == 1) ~ race_12 + gender_12 + Age.12 + educ_12 + faminc_12 + guncontrol12 + climate12 + immg.status12 + immg.borderpatrol12 + immg.policeqs12 + immg.finebiz12 + immg.pubgoods12 + immg.citzdenial12 + abortion12 + jobs.envir12 + gaymarriage12 + affirmact12 + balbudget1.12 + balbudget2.12 + docvisit12 + newchild12 + moveoutchild12 + newmarriage12 + newdivorce12 + AAraceresentA12 + AAraceresentB12 + Hispraceresent12, data = CCES_Panel.vars)
+
+prob.presDtoR.switch
+
+prob.presRtoD.switch <- lm(cbind(CCES_Panel.vars$presvote12 == 1 & CCES_Panel.vars$presvote08 == 2) ~ race_12 + gender_12 + Age.12 + educ_12 + faminc_12 + guncontrol12 + climate12 + immg.status12 + immg.borderpatrol12 + immg.policeqs12 + immg.finebiz12 + immg.pubgoods12 + immg.citzdenial12 + abortion12 + jobs.envir12 + gaymarriage12 + affirmact12 + balbudget1.12 + balbudget2.12 + docvisit12 + newchild12 + moveoutchild12 + newmarriage12 + newdivorce12 + AAraceresentA12 + AAraceresentB12 + Hispraceresent12, data = CCES_Panel.vars)
+
+prob.presRtoD.switch
+
 # Who are these switchers?
 
   # Demographics:
@@ -171,6 +216,10 @@ CCES_Panel_Full3waves_VV_V4 %>%
     # By race:
 
 ggplot(pres12_vars, aes(race_12, race_12/sum(race_12), fill = reorder(presvote12, race_12/sum(race_12)))) + geom_col() + scale_y_continuous(labels = scales::percent) + xlab("Race of Switchers") + ylab("Percentage of Switchers") + ggtitle("President 2012 Switchers by Race") + scale_x_continuous(breaks = c(1, 2, 3, 4, 5, 6, 7), label = c("White", "Black", "Hispanic", "Asian", "Native American", "Mixed", "Other")) + theme(panel.background = element_rect("white"), axis.line.x.bottom = element_line("black"), axis.line.y.left = element_line("black")) + scale_fill_manual("Voter for", labels = c("Romney", "Obama"), values=c("red", "blue"))
+
+      # or,
+
+ggplot(pres12_vars, aes(race_12, sum(race_12), fill = reorder(presvote12, race_12/sum(race_12)))) + geom_col() + xlab("Race of Switchers") + ylab("Switchers") + ggtitle("President 2012 Switchers by Race") + scale_x_continuous(breaks = c(1, 2, 3, 4, 5, 6, 7), label = c("White", "Black", "Hispanic", "Asian", "Native American", "Mixed", "Other")) + theme(panel.background = element_rect("white"), axis.line.x.bottom = element_line("black"), axis.line.y.left = element_line("black")) + scale_fill_manual("Voter for", labels = c("Romney", "Obama"), values=c("red", "blue"))
 
     # By sex:
 
@@ -205,11 +254,6 @@ pres12_vars <- pres12_vars %>%
 pres12_vars$income <- as.numeric(pres12_vars$income)
 
 ggplot(pres12_vars, aes(income, income/sum(income), fill = reorder(presvote12, income/sum(income)))) + geom_col() + scale_y_continuous(labels = scales::percent) + xlab("Income of Switchers in US Dollars") + ylab("Percentage of Switchers") + ggtitle("President 2012 Switchers by Income") + scale_x_continuous(breaks = c(1, 2, 3, 4, 5, 6), label = c("0-29,999", "30,000-59,999", "60,000-99,999", "100,000-149,999", "150,000+", "Didn't say/Skipped/Not asked")) + theme(panel.background = element_rect("white"), axis.line.x.bottom = element_line("black"), axis.line.y.left = element_line("black")) + scale_fill_manual("Voter for", labels = c("Romney", "Obama"), values=c("red", "blue")) + coord_flip()
-
- # By policy preferences
-
-      
-
-
-
 ```
+
+ANES <- read_dta("C:/Users/david/Downloads/ANES.dta")
