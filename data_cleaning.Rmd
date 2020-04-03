@@ -12,7 +12,12 @@ library(tidyverse)
 library(haven)
 library(janitor)
 library(rvest)
+library(shiny)
 options(scipen=999)
+```
+
+```{r, include = FALSE}
+
 load("~/CCES.RData")
 
 # Cleaning CCES Data. First, copying the dataset.
@@ -166,25 +171,25 @@ CCES_Panel_Full3waves_VV_V4 %>%
 
 CCES_Panel_Full3waves_VV_V4 %>%
   filter(CC10_308a < 5, CC12_308a < 5, CC14_308a < 5) %>%
-  ggplot(aes(CC10_308a - CC14_308a)) + geom_bar() + geom_text(aes(label = scales::percent(..prop..), y= ..prop.. ), stat= "count", vjust = 1) + xlab("<-Negative Movement Positive->") + ylab("Respondents") + ggtitle("Change in Presidential Approval from 2010 to 2014: General Public")
+  ggplot(aes(as.numeric(CC10_308a - CC14_308a))) + geom_bar() + geom_text(aes(label = scales::percent(..prop..), y= ..prop.. ), stat= "count", vjust = 1) + xlab("<-Negative Movement Positive->") + ylab("Respondents") + ggtitle("Change in Presidential Approval from 2010 to 2014: General Public")
 
 # Change in presidential approval in switchers
 
 CCES_Panel_Full3waves_VV_V4 %>%
   filter(CC10_308a < 5, CC12_308a < 5, CC14_308a < 5, CC10_317 < 3, CC12_410a < 3, CC10_317 != CC12_410a) %>%
-  ggplot(aes(CC10_308a - CC14_308a)) + geom_bar() + geom_text(aes(label = scales::percent(..prop..), y= ..prop.. ), stat= "count", vjust = 1) + xlab("<-Negative Movement Positive->") + ylab("Respondents") + ggtitle("Change in Presidential Approval from 2010 to 2014: Switchers")
+  ggplot(aes(as.numeric(CC10_308a - CC14_308a))) + geom_bar() + geom_text(aes(label = scales::percent(..prop..), y= ..prop.. ), stat= "count", vjust = 1) + xlab("<-Negative Movement Positive->") + ylab("Respondents") + ggtitle("Change in Presidential Approval from 2010 to 2014: Switchers")
 
 # Change in presidential approval for D-to-R switchers
 
 CCES_Panel_Full3waves_VV_V4 %>%
   filter(CC10_308a < 5, CC12_308a < 5, CC14_308a < 5, CC10_317 == 1, CC12_410a == 2) %>%
-  ggplot(aes(CC10_308a - CC14_308a)) + geom_bar() + geom_text(aes(label = scales::percent(..prop..), y= ..prop.. ), stat= "count", vjust = 1) + xlab("<-Negative Movement Positive->") + ylab("Respondents") + ggtitle("Change in Presidential Approval from 2010 to 2014: Dem-to-Rep Switchers")
+  ggplot(aes(as.numeric(CC10_308a - CC14_308a))) + geom_bar() + geom_text(aes(label = scales::percent(..prop..), y= ..prop.. ), stat= "count", vjust = 1) + xlab("<-Negative Movement Positive->") + ylab("Respondents") + ggtitle("Change in Presidential Approval from 2010 to 2014: Dem-to-Rep Switchers")
 
 # Change in presidential approval for R-to-D switchers
 
 CCES_Panel_Full3waves_VV_V4 %>%
   filter(CC10_308a < 5, CC12_308a < 5, CC14_308a < 5, CC10_317 == 2, CC12_410a == 1) %>%
-  ggplot(aes(CC10_308a - CC14_308a)) + geom_bar() + geom_text(aes(label = scales::percent(..prop..), y= ..prop.. ), stat= "count", vjust = 1) + xlab("<-Negative Movement Positive->") + ylab("Respondents") + ggtitle("Change in Presidential Approval from 2010 to 2014: Rep-to-Dem Switchers")
+  ggplot(aes(as.numeric(CC10_308a - CC14_308a))) + geom_bar() + geom_text(aes(label = scales::percent(..prop..), y= ..prop.. ), stat= "count", vjust = 1) + xlab("<-Negative Movement Positive->") + ylab("Respondents") + ggtitle("Change in Presidential Approval from 2010 to 2014: Rep-to-Dem Switchers")
 ```
 
 -----------------------------
@@ -213,13 +218,21 @@ prob.presRtoD.switch
 
   # Demographics:
     
-    # By race:
+    # By race (percentage on y axis):
 
 ggplot(pres12_vars, aes(race_12, race_12/sum(race_12), fill = reorder(presvote12, race_12/sum(race_12)))) + geom_col() + scale_y_continuous(labels = scales::percent) + xlab("Race of Switchers") + ylab("Percentage of Switchers") + ggtitle("President 2012 Switchers by Race") + scale_x_continuous(breaks = c(1, 2, 3, 4, 5, 6, 7), label = c("White", "Black", "Hispanic", "Asian", "Native American", "Mixed", "Other")) + theme(panel.background = element_rect("white"), axis.line.x.bottom = element_line("black"), axis.line.y.left = element_line("black")) + scale_fill_manual("Voter for", labels = c("Romney", "Obama"), values=c("red", "blue"))
 
-      # or,
+      # or (total on y axis),
 
 ggplot(pres12_vars, aes(race_12, sum(race_12), fill = reorder(presvote12, race_12/sum(race_12)))) + geom_col() + xlab("Race of Switchers") + ylab("Switchers") + ggtitle("President 2012 Switchers by Race") + scale_x_continuous(breaks = c(1, 2, 3, 4, 5, 6, 7), label = c("White", "Black", "Hispanic", "Asian", "Native American", "Mixed", "Other")) + theme(panel.background = element_rect("white"), axis.line.x.bottom = element_line("black"), axis.line.y.left = element_line("black")) + scale_fill_manual("Voter for", labels = c("Romney", "Obama"), values=c("red", "blue"))
+
+      # side by side, percentage
+
+      # side by side, total
+
+ggplot(pres12_vars, aes(race_12, fill = reorder(presvote12, race_12/sum(race_12)))) + geom_bar(position = "dodge") + xlab("Race of Switchers") + ylab("Switchers") + ggtitle("President 2012 Switchers by Race") + scale_x_continuous(breaks = c(1, 2, 3, 4, 5, 6, 7), label = c("White", "Black", "Hispanic", "Asian", "Native American", "Mixed", "Other")) + theme(panel.background = element_rect("white"), axis.line.x.bottom = element_line("black"), axis.line.y.left = element_line("black")) + scale_fill_manual("Voter for", labels = c("Romney", "Obama"), values=c("red", "blue"))
+
+
 
     # By sex:
 
@@ -258,4 +271,3 @@ ggplot(pres12_vars, aes(income, income/sum(income), fill = reorder(presvote12, i
 
 # Descriptive stuff in one pane, and maybe a drop down panel to pick one, and maybe something that will allow the user to compare two or three demographic/policy groups groups
 
-ANES <- read_dta("C:/Users/david/Downloads/ANES.dta")
