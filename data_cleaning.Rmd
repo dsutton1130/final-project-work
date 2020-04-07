@@ -2,7 +2,9 @@
 title: "Data Cleaning"
 author: "David Sutton"
 date: "2/19/2020"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
