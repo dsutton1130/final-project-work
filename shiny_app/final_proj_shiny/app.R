@@ -16,6 +16,8 @@ ui <- fluidPage(navbarPage("Switchers",
                                                  h3("President 2012 Switchers"),
                                                  sidebarPanel(
                                                      helpText("Select a demographic group to learn about switchers"),
+                                                     span(),
+                                                     helpText(em("In this case switchers are Obama-to-Romney or McCain-to-Obama voters in 2008 and 2012, respectively")),
                                                      selectInput("plot1", "Demographic Groups:",
                                                                  choices = list("Race" = "race_12",
                                                                                 "Gender" = "gender_12",
@@ -38,7 +40,7 @@ server <- function(input, output, session){
                                          "Native American", "Mixed", "Other")) +
             theme(panel.background = element_rect("white"), axis.line.x.bottom =
                       element_line("black"), axis.line.y.left = element_line("black")) +
-            scale_fill_manual("Voter for", labels = c("Romney", "Obama"), values=c("red", "blue"))
+            scale_fill_manual("Voted for", labels = c("Obama-Romney", "McCain-Obama"), values=c("red", "blue"))
       } else if(input$plot1 == "gender_12"){
         ggplot(pres12_vars, aes(gender_12, gender_12/sum(gender_12), fill =
                                   reorder(presvote12, gender_12/sum(gender_12)))) +
@@ -46,8 +48,8 @@ server <- function(input, output, session){
           ylab("Percentage of Switchers") + ggtitle("President 2012 Switchers by Gender") +
           scale_x_continuous(breaks = c(1, 2), label = c("Male", "Female")) +
           theme(panel.background = element_rect("white"), axis.line.x.bottom = element_line("black"),
-                axis.line.y.left = element_line("black")) + scale_fill_manual("Voter for",
-                                                                              labels = c("Romney", "Obama"),
+                axis.line.y.left = element_line("black")) + scale_fill_manual("Voted for",
+                                                                              labels = c("Obama-Romney", "McCain-Obama"),
                                                                               values=c("red", "blue"))
       } else if(input$plot1 == "agegroup"){
         ggplot(pres12_vars, aes(agegroup, agegroup/sum(agegroup), fill =
@@ -57,8 +59,8 @@ server <- function(input, output, session){
           scale_x_continuous(breaks = c(1, 2, 3, 4, 5, 6, 7, 8), label =
                                c("18-24", "25-34", "35-44", "45-54", "55-64", "65-74", "75-84", "85-94")) +
           theme(panel.background = element_rect("white"), axis.line.x.bottom = element_line("black"),
-                axis.line.y.left = element_line("black")) + scale_fill_manual("Voter for", labels =
-                                                                                c("Romney", "Obama"),
+                axis.line.y.left = element_line("black")) + scale_fill_manual("Voted for", labels =
+                                                                                c("Obama-Romney", "McCain-Obama"),
                                                                               values=c("red", "blue"))
       } else if(input$plot1 == "educ_12"){
         pres12_vars %>%
@@ -70,8 +72,8 @@ server <- function(input, output, session){
                                                                      "High school graduate", "Some college",
                                                                      "2-year", "4-year", "Post-grad")) +
           theme(panel.background = element_rect("white"), axis.line.x.bottom = element_line("black"),
-                axis.line.y.left = element_line("black")) + scale_fill_manual("Voter for",
-                                                                              labels = c("Romney", "Obama"),
+                axis.line.y.left = element_line("black")) + scale_fill_manual("Voted for",
+                                                                              labels = c("Obama-Romney", "McCain-Obama"),
                                                                               values=c("red", "blue")) +
           coord_flip()
       } else if(input$plot1 == "partyreg12"){
@@ -84,8 +86,8 @@ server <- function(input, output, session){
           scale_x_continuous(breaks = c(1, 2, 3, 4), label = c("None/Ind/Didn't Say", "Democratic",
                                                                "Republican", "Other")) +
           theme(panel.background = element_rect("white"), axis.line.x.bottom = element_line("black"),
-                axis.line.y.left = element_line("black")) + scale_fill_manual("Voter for",
-                                                                              labels = c("Romney", "Obama"),
+                axis.line.y.left = element_line("black")) + scale_fill_manual("Voted for",
+                                                                              labels = c("Obama-Romney", "McCain-Obama"),
                                                                               values=c("red", "blue"))
       } else if(input$plot1 == "income"){
         ggplot(pres12_vars, aes(income, income/sum(income), fill = reorder(presvote12, income/sum(income)))) +
@@ -96,8 +98,8 @@ server <- function(input, output, session){
                                                                      "150,000+",
                                                                      "Didn't say/Skipped/Not asked")) +
           theme(panel.background = element_rect("white"), axis.line.x.bottom = element_line("black"),
-                axis.line.y.left = element_line("black")) + scale_fill_manual("Voter for",
-                                                                              labels = c("Romney", "Obama"),
+                axis.line.y.left = element_line("black")) + scale_fill_manual("Voted for",
+                                                                              labels = c("Obama-Romney", "McCain-Obama"),
                                                                               values=c("red", "blue")) +
           coord_flip()
         }
