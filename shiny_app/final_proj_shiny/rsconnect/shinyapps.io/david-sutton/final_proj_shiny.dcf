@@ -5,8 +5,9 @@ account: david-sutton
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 2096345
-bundleId: 2997697
+bundleId: 3001764
 url: https://david-sutton.shinyapps.io/final_proj_shiny/
-when: 1586546926.14328
+when: 1586656408.61178
 asMultiple: FALSE
 asStatic: FALSE
+ignoredFiles: prac.shiny.R|switchers_gradient2.png|switchers_image2.png
