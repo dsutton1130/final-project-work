@@ -8,7 +8,7 @@ CCES_Panel <- read_rds("CCES.rds")
 switchers <- read_rds("switchers.rds")
 
 ui <- fluidPage(navbarPage("Switchers",
-                           theme = shinytheme("journal"),
+                           theme = shinytheme("simplex"),
                            tabPanel("About",
                                     imageOutput("switchers1", width = "100%", height = "100%"),
                                     br(),
@@ -85,7 +85,7 @@ server <- function(input, output, session){
                                                                               "Asian", "Native American",
                                                                               "Mixed", "Other")) +
                 theme_classic() +
-                scale_fill_manual("Group", labels = c("Electorate", "Switchers"), values=c("dark green", "orange"))
+                scale_fill_manual("Group", labels = c("Electorate", "Switchers"), values=c("dark grey", "purple"))
             
         } else if(input$plot1 == "gender_12"){
             CCES_Panel %>%
@@ -99,7 +99,7 @@ server <- function(input, output, session){
                      caption = "Source: 2010-2014 Cooperative Congressional Election Study Panel Survey") +
                 scale_x_continuous(breaks = c(1, 2), label = c("Male", "Female")) +
                 theme_classic() +
-                scale_fill_manual("Group", labels = c("Electorate", "Switchers"), values=c("dark green", "orange"))
+                scale_fill_manual("Group", labels = c("Electorate", "Switchers"), values=c("dark grey", "purple"))
             
         } else if(input$plot1 == "agegroup12"){
             CCES_Panel %>%
@@ -115,7 +115,7 @@ server <- function(input, output, session){
                                                                                "45-54", "55-64", "65-74", "75-84",
                                                                                "85-94")) +
                 theme_classic() +
-                scale_fill_manual("Group", labels = c("Electorate", "Switchers"), values=c("dark green", "orange"))
+                scale_fill_manual("Group", labels = c("Electorate", "Switchers"), values=c("dark grey", "purple"))
             
         } else if(input$plot1 == "educ_12"){
             CCES_Panel %>%
@@ -131,7 +131,7 @@ server <- function(input, output, session){
                                                                            "High school graduate", "Some college",
                                                                            "2-year", "4-year", "Post-grad")) +
                 theme_classic() +
-                scale_fill_manual("Group", labels = c("Electorate", "Switchers"), values=c("dark green", "orange")) +
+                scale_fill_manual("Group", labels = c("Electorate", "Switchers"), values=c("dark grey", "purple")) +
                 coord_flip()
             
         } else if(input$plot1 == "partyreg12"){
@@ -149,7 +149,7 @@ server <- function(input, output, session){
                                                                      "Democrat", "Republican",
                                                                      "Other")) +
                 theme_classic() +
-                scale_fill_manual("Group", labels = c("Electorate", "Switchers"), values=c("dark green", "orange"))
+                scale_fill_manual("Group", labels = c("Electorate", "Switchers"), values=c("dark grey", "purple"))
             
         } else if(input$plot1 == "income12"){
             CCES_Panel %>%
@@ -165,7 +165,7 @@ server <- function(input, output, session){
                                                                          "60,000-99,999", "100,000-149,999",
                                                                          "150,000+", "Didn't say/Skipped/Not asked")) +
                 theme_classic() +
-                scale_fill_manual("Group", labels = c("Electorate", "Switchers"), values=c("dark green", "orange")) +
+                scale_fill_manual("Group", labels = c("Electorate", "Switchers"), values=c("dark grey", "purple")) +
                 coord_flip()
         }
         
@@ -180,7 +180,7 @@ server <- function(input, output, session){
                 geom_bar(aes(y = ..count../sum(..count..))) + scale_y_continuous(labels = scales::percent) +
                 xlab("Race of Switchers") + ylab("Percentage of Switchers") +
                 labs(title = "President 2012 Switchers by Race", caption =
-                            "Source: 2010-2014 Cooperative Congressional Election Study Panel Survey") +
+                         "Source: 2010-2014 Cooperative Congressional Election Study Panel Survey") +
                 scale_x_continuous(breaks = c(1, 2, 3, 4, 5, 6, 7), label = c("White", "Black","Hispanic",
                                                                               "Asian","Native American",
                                                                               "Mixed", "Other")) +
@@ -197,7 +197,7 @@ server <- function(input, output, session){
                 geom_bar(aes(y = ..count../sum(..count..))) + scale_y_continuous(labels = scales::percent) +
                 xlab("Gender of Switchers") + ylab("Percentage of Switchers") +
                 labs(title = "President 2012 Switchers by Gender", caption =
-                            "Source: 2010-2014 Cooperative Congressional Election Study Panel Survey") +
+                         "Source: 2010-2014 Cooperative Congressional Election Study Panel Survey") +
                 scale_x_continuous(breaks = c(1, 2), label = c("Male", "Female")) +
                 theme(panel.background = element_rect("white"), axis.line.x.bottom = element_line("black"),
                       axis.line.y.left = element_line("black")) + scale_fill_manual("Voted for",
@@ -211,7 +211,7 @@ server <- function(input, output, session){
                 geom_bar(aes(y = ..count../sum(..count..))) + xlab("Age of Switchers") +
                 ylab("Percentage of Switchers") +
                 labs(title = "President 2012 Switchers by Age", caption =
-                            "Source: 2010-2014 Cooperative Congressional Election Study Panel Survey") +
+                         "Source: 2010-2014 Cooperative Congressional Election Study Panel Survey") +
                 scale_x_continuous(breaks = c(1, 2, 3, 4, 5, 6, 7, 8), label = c("18-24", "25-34", "35-44",
                                                                                  "45-54", "55-64", "65-74", "75-84",
                                                                                  "85-94")) +
@@ -227,7 +227,7 @@ server <- function(input, output, session){
                 geom_bar(aes(y = ..count../sum(..count..))) + scale_y_continuous(labels = scales::percent) +
                 xlab("Education Level") + ylab("Percentage of Switchers") +
                 labs(title = "President 2012 Switchers by Education", caption =
-                            "Source: 2010-2014 Cooperative Congressional Election Study Panel Survey") +
+                         "Source: 2010-2014 Cooperative Congressional Election Study Panel Survey") +
                 scale_x_continuous(breaks = c(1, 2, 3, 4, 5, 6), label = c("No High School",
                                                                            "High school graduate",
                                                                            "Some college", "2-year",
@@ -245,7 +245,7 @@ server <- function(input, output, session){
                 geom_bar(aes(y = ..count../sum(..count..))) + scale_y_continuous(labels = scales::percent) +
                 xlab("Party of Switchers") + ylab("Percentage of Switchers") +
                 labs(title = "President 2012 Switchers by Party", caption =
-                            "Source: 2010-2014 Cooperative Congressional Election Study Panel Survey") +
+                         "Source: 2010-2014 Cooperative Congressional Election Study Panel Survey") +
                 scale_x_continuous(breaks = c(1, 2, 3, 4), label = c("None/Ind/Didn't Say", "Democratic",
                                                                      "Republican","Other")) +
                 theme(panel.background = element_rect("white"), axis.line.x.bottom = element_line("black"),
@@ -260,7 +260,7 @@ server <- function(input, output, session){
                 geom_bar(aes(y = ..count../sum(..count..))) + scale_y_continuous(labels = scales::percent) +
                 xlab("Income of Switchers") + ylab("Percentage of Switchers") +
                 labs(title = "President 2012 Switchers by Income", caption =
-                            "Source: 2010-2014 Cooperative Congressional Election Study Panel Survey") +
+                         "Source: 2010-2014 Cooperative Congressional Election Study Panel Survey") +
                 scale_x_continuous(breaks = c(1, 2, 3, 4, 5, 6), label = c("0-29,999", "30,000-59,999",
                                                                            "60,000-99,999","100,000-149,999",
                                                                            "150,000+", "Didn't say/Skipped/Not asked")) +

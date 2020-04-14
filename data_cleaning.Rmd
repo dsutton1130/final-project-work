@@ -308,6 +308,29 @@ CCES_Panel %>%
 
 ```{r, echo = FALSE}
 
+# regression exploration on race and pres. 2012 switching
+
+pres12.race <- CCES_Panel %>%
+  mutate(race_12 = ifelse(is.na(race_12), 0, race_12),
+         p12switch = ifelse(is.na(p12switch), 0, p12switch),
+         white = ifelse(race_12 == 1, 1, 0),
+         black = ifelse(race_12 == 2, 1, 0),
+         hispanic = ifelse(race_12 == 3, 1, 0),
+         asian = ifelse(race_12 == 4, 1, 0),
+         native.american = ifelse(race_12 == 5, 1, 0),
+         mixed = ifelse(race_12 == 6, 1, 0),
+         other = ifelse(race_12 == 7, 1, 0),
+         middle.eastern = ifelse(race_12 == 8, 1, 0)) %>%
+  select(p12switch, white, black, hispanic, asian, native.american, mixed, other, middle.eastern)
+
+pres12.race.model <- glm(p12switch ~ white + black + hispanic + asian, binomial, pres12.race) %>%
+  tidy(conf.int = TRUE) %>%
+  select(term, estimate, conf.low, conf.high) %>%
+  print()
+```
+
+```{r, echo = FALSE}
+
 # some plots
 
 # 2008 voters on racial attitudes towards Blacks and Hispanics, by vote for president
@@ -352,11 +375,3 @@ CCES_Panel_Full3waves_VV_V4 %>%
   filter(CC10_308a < 5, CC12_308a < 5, CC14_308a < 5, CC10_317 == 2, CC12_410a == 1) %>%
   ggplot(aes(as.numeric(CC10_308a - CC14_308a))) + geom_bar() + geom_text(aes(label = scales::percent(..prop..), y= ..prop.. ), stat= "count", vjust = 1) + xlab("<-Negative Movement Positive->") + ylab("Respondents") + ggtitle("Change in Presidential Approval from 2010 to 2014: Rep-to-Dem Switchers")
 ```
-
-```{r, echo = FALSE}
-
-# working on demographic regression next
-
-
-```
-

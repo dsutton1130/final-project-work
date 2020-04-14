@@ -5,9 +5,9 @@ account: david-sutton
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 2096345
-bundleId: 3010843
+bundleId: 3014175
 url: https://david-sutton.shinyapps.io/final_proj_shiny/
-when: 1586857284.58462
+when: 1586907562.03067
 asMultiple: FALSE
 asStatic: FALSE
 ignoredFiles: prac.shiny.R
