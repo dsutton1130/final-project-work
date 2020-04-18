@@ -81,11 +81,11 @@ server <- function(input, output, session){
                 scale_y_continuous(labels = scales::percent) +
                 labs(x = "Race", y = "Percentage of Group", title = "How Switchers Compare to Electorate",
                      caption = "Source: 2010-2014 Cooperative Congressional Election Study Panel Survey") +
-                scale_x_continuous(breaks = c(1, 2, 3, 4, 5, 6, 7), label = c("White", "Black", "Hispanic",
+                scale_x_continuous(breaks = c(1, 2, 3, 4, 5, 6, 7, 8), label = c("White", "Black", "Hispanic",
                                                                               "Asian", "Native American",
-                                                                              "Mixed", "Other")) +
+                                                                              "Mixed", "Other", "Middle Eastern")) +
                 theme_classic() +
-                scale_fill_manual("Group", labels = c("Electorate", "Switchers"), values=c("dark grey", "purple"))
+                scale_fill_manual(na.translate = F, "Group", labels = c("Electorate", "Switchers"), values=c("dark grey", "purple"))
             
         } else if(input$plot1 == "gender_12"){
             CCES_Panel %>%
@@ -99,7 +99,7 @@ server <- function(input, output, session){
                      caption = "Source: 2010-2014 Cooperative Congressional Election Study Panel Survey") +
                 scale_x_continuous(breaks = c(1, 2), label = c("Male", "Female")) +
                 theme_classic() +
-                scale_fill_manual("Group", labels = c("Electorate", "Switchers"), values=c("dark grey", "purple"))
+                scale_fill_manual(na.translate = F, "Group", labels = c("Electorate", "Switchers"), values=c("dark grey", "purple"))
             
         } else if(input$plot1 == "agegroup12"){
             CCES_Panel %>%
@@ -115,7 +115,7 @@ server <- function(input, output, session){
                                                                                "45-54", "55-64", "65-74", "75-84",
                                                                                "85-94")) +
                 theme_classic() +
-                scale_fill_manual("Group", labels = c("Electorate", "Switchers"), values=c("dark grey", "purple"))
+                scale_fill_manual(na.translate = F, "Group", labels = c("Electorate", "Switchers"), values=c("dark grey", "purple"))
             
         } else if(input$plot1 == "educ_12"){
             CCES_Panel %>%
@@ -131,7 +131,7 @@ server <- function(input, output, session){
                                                                            "High school graduate", "Some college",
                                                                            "2-year", "4-year", "Post-grad")) +
                 theme_classic() +
-                scale_fill_manual("Group", labels = c("Electorate", "Switchers"), values=c("dark grey", "purple")) +
+                scale_fill_manual(na.translate = F, "Group", labels = c("Electorate", "Switchers"), values=c("dark grey", "purple")) +
                 coord_flip()
             
         } else if(input$plot1 == "partyreg12"){
@@ -149,7 +149,7 @@ server <- function(input, output, session){
                                                                      "Democrat", "Republican",
                                                                      "Other")) +
                 theme_classic() +
-                scale_fill_manual("Group", labels = c("Electorate", "Switchers"), values=c("dark grey", "purple"))
+                scale_fill_manual(na.translate = F, "Group", labels = c("Electorate", "Switchers"), values=c("dark grey", "purple"))
             
         } else if(input$plot1 == "income12"){
             CCES_Panel %>%
@@ -165,7 +165,7 @@ server <- function(input, output, session){
                                                                          "60,000-99,999", "100,000-149,999",
                                                                          "150,000+", "Didn't say/Skipped/Not asked")) +
                 theme_classic() +
-                scale_fill_manual("Group", labels = c("Electorate", "Switchers"), values=c("dark grey", "purple")) +
+                scale_fill_manual(na.translate = F, "Group", labels = c("Electorate", "Switchers"), values=c("dark grey", "purple")) +
                 coord_flip()
         }
         
