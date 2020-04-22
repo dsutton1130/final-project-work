@@ -19,6 +19,7 @@ library(broom)
 library(gt)
 library(skimr)
 library(rpart)
+library(tidymodels)
 library(rpart.plot)
 library(parsnip)
 library(fastDummies)
@@ -322,37 +323,33 @@ CCES_Panel %>%
 ```{r, echo = FALSE}
 
 # regression exploration on race and pres. 2012 switching
+  # Making a set dummy variables for race and a new categorical variable for race
 
-pres12.race <- CCES_Panel %>%
-  mutate(race_12 = ifelse(is.na(race_12), 0, race_12),
-         p12switch = ifelse(is.na(p12switch), 0, p12switch),
-         white = ifelse(race_12 == 1, 1, 0),
-         black = ifelse(race_12 == 2, 1, 0),
-         hispanic = ifelse(race_12 == 3, 1, 0),
-         asian = ifelse(race_12 == 4, 1, 0),
-         native.american = ifelse(race_12 == 5, 1, 0),
-         mixed = ifelse(race_12 == 6, 1, 0),
-         other = ifelse(race_12 == 7, 1, 0),
-         middle.eastern = ifelse(race_12 == 8, 1, 0)) %>%
-  select(p12switch, white, black, hispanic, asian, native.american, mixed, other, middle.eastern)
+CCES_Panel.reg <- CCES_Panel %>%
+  dummy_cols(select_columns = c("race_12", "partyreg12")) %>%
+  mutate(race_12_char = case_when(race_12 == 1 ~ "white",
+                                  race_12 == 2 ~ "black",
+                                  race_12 == 3 ~ "hispanic",
+                                  race_12 == 4 ~ "asian",
+                                  race_12 == 5 ~ "native american",
+                                  race_12 == 6 ~ "mixed",
+                                  race_12 == 7 ~ "other",
+                                  race_12 == 8 ~ "middle eastern"),
+         partyreg12.char = case_when(partyreg12 == 1 ~ "none, ind., didn't say",
+                                     partyreg12 == 2 ~ "democrat",
+                                     partyreg12 == 3 ~ "republican",
+                                     partyreg12 == 4 ~ "other"))
 
-pres12.race.model <- glm(p12switch ~ white + black + hispanic + asian, binomial, pres12.race) %>%
+logistic_mod <- logistic_reg() %>%
+  set_engine("glm")
+
+logistic_fit <- fit(logistic_mod, factor(p12switch) ~ gender_12 + age12 + educ_12 + race_12 + income12 + partyreg12.char, data = CCES_Panel.reg)
+
+logistic_fit$fit %>%
   tidy(conf.int = TRUE) %>%
-  select(term, estimate, conf.low, conf.high) %>%
-  print()
-
-lm(p12switch ~ white + black + hispanic + asian, pres12.race) %>%
-  tidy(conf.int = TRUE) %>%
-  select(term, estimate, conf.low, conf.high) %>%
-  print()
+  select(term, estimate, conf.low, conf.high)
 ```
 
-```{r, echo = FALSE}
-
-# Performing Regressions
-
-
-```
 
 ```{r, echo = FALSE}
 
