@@ -335,19 +335,21 @@ CCES_Panel.reg <- CCES_Panel %>%
                                   race_12 == 6 ~ "mixed",
                                   race_12 == 7 ~ "other",
                                   race_12 == 8 ~ "middle eastern"),
+         gender_12 = ifelse(gender_12 == 2, 0, gender_12),
          partyreg12.char = case_when(partyreg12 == 1 ~ "none, ind., didn't say",
                                      partyreg12 == 2 ~ "democrat",
                                      partyreg12 == 3 ~ "republican",
                                      partyreg12 == 4 ~ "other"))
 
-logistic_mod <- logistic_reg() %>%
-  set_engine("glm")
+cces.test <- CCES_Panel.reg %>% filter(ideo5_12 < 6, pid3_12 < 4) %>% mutate(ideo5_12 = ifelse(ideo5_12 < 3, 1, ifelse(ideo5_12 == 3, 2, ifelse(ideo5_12 < 3, 3, ideo5_12))), pid3_12 = ifelse(pid3_12 == 2, 3, ifelse(pid3_12 == 3, 2, pid3_12)))
 
-logistic_fit <- fit(logistic_mod, factor(p12switch) ~ gender_12 + age12 + educ_12 + race_12 + income12 + partyreg12.char, data = CCES_Panel.reg)
+mod1 <- glm(p12switch ~ gender_12 + age12 + ideo5_12 + pid3_12, binomial, cces.test)
 
-logistic_fit$fit %>%
-  tidy(conf.int = TRUE) %>%
-  select(term, estimate, conf.low, conf.high)
+summary(mod1)
+
+mod2 <- glm(p12switch ~ gender_12 + age12 + ideo5_12 + pid3_12, binomial, CCES_Panel.reg)
+
+summary(mod2)
 ```
 
 

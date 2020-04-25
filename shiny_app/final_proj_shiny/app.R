@@ -15,7 +15,26 @@ ui <- fluidPage(navbarPage("Switchers",
                                     br(),
                                     imageOutput("switchers2", width = "100%", height = "100%"),
                                     br(),
-                                    h3("Analyzing the Relationships Between Vote-Switching & Demographics, Policy, and Public Opinion", align = "center")),
+                                    h3("Analyzing the Relationships Between Vote-Switching & Demographics, Policy Positions, and Public Opinion", align = "center"),
+                                    br(),
+                                    div(),
+                                    
+                                    
+                                    
+                                    br(),
+                                    fluidRow(column(2),
+                                                               
+                                                               h4(strong("About this Project"), align = "center"),          
+
+                                                               
+                                                               p("This project investigates people who vote for one major
+                                                               party's candidate in an election and then vote for the other
+                                                               major party's candidate in the following election. These voters
+                                                               are knowns as switchers. In this project I use survey responses on
+                                                               a wide variety of subjects (e.g., demographics, policy positions, life
+                                                               events) to compare switchers to the general electorate and present
+                                                               a profile of switchers. The data presented here comes from the 2010-2014
+                                                               Cooperative Congressional Election Study Panel Survey."))),
                            tabPanel("Graphics",
                                     tabsetPanel(
                                         tabPanel("Who Switches?",
