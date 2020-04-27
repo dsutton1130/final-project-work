@@ -26,21 +26,18 @@ library(fastDummies)
 options(scipen=999)
 ```
 
-```{r, include = FALSE}
+```{r initial loading and copying, include = FALSE}
 
 # The dataset - 2010-2014 Cooperative Congressional Election Study Panel Survey
 
 load("~/CCES.RData")
-```
-
-```{r, include = FALSE}
 
 # Copying the dataset.
 
 CCES_Panel <- CCES_Panel_Full3waves_VV_V4
 ```
 
-```{r, echo = FALSE}
+```{r cleanig and isolating groups, echo = FALSE}
 
 # Cleaning data: First, isolating:
 
@@ -96,7 +93,7 @@ house.switch <- full_join(house12_vars, house14_vars, by = c("caseid", "housevot
 switchers <- full_join(house.switch, pres12_vars, by = c("caseid", "birthyr_12", "gender_12", "race_12", "economy12", "fedtax.retro12", "obama.app12", "congress.app12", "CC12_315a", "guncontrol12", "climate12", "immg.status12", "immg.borderpatrol12", "immg.policeqs12", "immg.finebiz12", "immg.pubgoods12", "immg.citzdenial12", "abortion12", "jobs.envir12", "gaymarriage12", "affirmact12", "balbudget1.12", "balbudget2.12", "selfideo12", "obamaideo12", "CC12_341C_post", "romneyideo12", "CC12_341D_post", "demideo12", "CC12_341E_post", "repideo12", "houserepideo12", "partyreg12", "repHouserep12", "docvisit12", "newchild12", "moveoutchild12", "newmarriage12", "newdivorce12", "descriptrep.race.eth12", "AAraceresentA12", "AAraceresentB12", "CC12_423a", "CC12_423a_other", "Hispraceresent12", "CC12_423b", "CC12_423b_other", "CC12_423bb", "pid7_12", "pid3_12", "ideo5_12", "pew_prayer_12", "religpew_12", "faminc_12", "educ_12", "state12"))
 ```
 
-```{r, echo = FALSE}
+```{r making switchers dataset more workable, echo = FALSE}
 
   # New variables added - agegroup.12, agegroup.14, pres.agegroup12, income.12,
 # income.14, and 3 columns which indicates to which switcher groups observations
@@ -124,7 +121,77 @@ switchers$income.12 <- as.numeric(switchers$income.12)
 switchers$income.14 <- as.numeric(switchers$income.14)
 ```
 
-```{r, echo = FALSE}
+```{r policy and public opinion plots for switchers}
+
+# economy
+
+switchers %>%
+  filter(p12switch == 1) %>%
+  ggplot(aes(economy12, ..prop.., fill = reorder(presvote12, economy12)), stat = "count") + geom_bar(aes(y = ..count../sum(..count..)), position = position_dodge()) + scale_y_continuous(labels = scales::percent) + xlab("Opinion") + ylab("Percentage of Switchers") + ggtitle("President 2012 Switchers by Opinion on Economy", subtitle = "Switchers voted for the incumbent despite their opinion on the economy") + scale_x_continuous(breaks = c(1, 2, 3, 4, 5, 6), label = c("Gotten much better", "Gotten better", "Stayed about the same", "Gotten Worse", "Gotten much worse", "Not sure")) + theme_classic() + scale_fill_manual("Voted for", labels = c("McCain-Obama", "Obama-Romney"), values=c("blue", "red"))
+
+# taxes
+
+switchers %>%
+  filter(p12switch == 1, fedtax.retro12 < 5) %>% # fedtax filter gets rid of  NAs
+  ggplot(aes(fedtax.retro12, ..prop.., fill = reorder(presvote12, fedtax.retro12)), stat = "count") + geom_bar(aes(y = ..count../sum(..count..)), position = position_dodge()) + scale_y_continuous(labels = scales::percent) + xlab("Opinion") + ylab("Percentage of Switchers") + ggtitle("President 2012 Switchers by Opinion on Taxes Paid") + scale_x_continuous(breaks = c(1, 2, 3, 4), label = c("Increased", "Decreased", "Stayed the same","Not sure")) + theme_classic() + scale_fill_manual("Voted for", labels = c("Obama-Romney", "McCain-Obama"), values=c("red", "blue"))
+
+# gun control
+
+switchers %>%
+  filter(p12switch == 1, guncontrol12 < 4) %>% # guncontrol filter leaves out NAs
+  ggplot(aes(guncontrol12, ..prop.., fill = reorder(presvote12, guncontrol12)), stat = "count") + geom_bar(aes(y = ..count../sum(..count..)), position = position_dodge()) + scale_y_continuous(labels = scales::percent) + xlab("Opinion") + ylab("Percentage of Switchers") + ggtitle("President 2012 Switchers by Opinion on Gun Control") + scale_x_continuous(breaks = c(1, 2, 3), label = c("More Strict", "Less Strict", "Kept As They Are")) + theme_classic() + scale_fill_manual("Voted for", labels = c("McCain-Obama", "Obama-Romney"), values=c("blue", "red"))
+
+# immigration - legal status
+switchers %>%
+  filter(p12switch == 1) %>%
+  ggplot(aes(immg.status12, ..prop.., fill = reorder(presvote12, immg.status12)), stat = "count") + geom_bar(aes(y = ..count../sum(..count..)), position = position_dodge()) + scale_y_continuous(labels = scales::percent) + xlab("Opinion") + ylab("Percentage of Switchers") + ggtitle("President 2012 Switchers by Opinion on Immigration") + scale_x_continuous(breaks = c(1, 2), label = c("Yes", "No")) + theme_classic() + scale_fill_manual("Voted for", labels = c("McCain-Obama", "Obama-Romney"), values=c("blue", "red"))
+
+# immigration - border patrol
+
+switchers %>%
+  filter(p12switch == 1) %>%
+  ggplot(aes(immg.borderpatrol12, ..prop.., fill = reorder(presvote12, immg.borderpatrol12)), stat = "count") + geom_bar(aes(y = ..count../sum(..count..)), position = position_dodge()) + scale_y_continuous(labels = scales::percent) + xlab("Opinion") + ylab("Percentage of Switchers") + ggtitle("President 2012 Switchers by Opinion on Immigration") + scale_x_continuous(breaks = c(1, 2), label = c("Yes", "No")) + theme_classic() + scale_fill_manual("Voted for", labels = c("Obama-Romney", "McCain-Obama"), values=c("red", "blue"))
+
+# immigration - police questioning
+
+switchers %>%
+  filter(p12switch == 1) %>%
+  ggplot(aes(immg.policeqs12, ..prop.., fill = reorder(presvote12, immg.policeqs12)), stat = "count") + geom_bar(aes(y = ..count../sum(..count..)), position = position_dodge()) + scale_y_continuous(labels = scales::percent) + xlab("Opinion") + ylab("Percentage of Switchers") + ggtitle("President 2012 Switchers by Opinion on Immigration") + scale_x_continuous(breaks = c(1, 2), label = c("Yes", "No")) + theme_classic() + scale_fill_manual("Voted for", labels = c("Obama-Romney", "McCain-Obama"), values=c("red", "blue"))
+
+# immigration - fine American businesses
+
+switchers %>%
+  filter(p12switch == 1) %>%
+  ggplot(aes(immg.finebiz12, ..prop.., fill = reorder(presvote12, immg.finebiz12)), stat = "count") + geom_bar(aes(y = ..count../sum(..count..)), position = position_dodge()) + scale_y_continuous(labels = scales::percent) + xlab("Opinion") + ylab("Percentage of Switchers") + ggtitle("President 2012 Switchers by Opinion on Immigration") + scale_x_continuous(breaks = c(1, 2), label = c("Yes", "No")) + theme_classic() + scale_fill_manual("Voted for", labels = c("Obama-Romney", "McCain-Obama"), values=c("red", "blue"))
+
+# immigration - use public goods
+
+switchers %>%
+  filter(p12switch == 1) %>%
+  ggplot(aes(immg.pubgoods12, ..prop.., fill = reorder(presvote12, immg.pubgoods12)), stat = "count") + geom_bar(aes(y = ..count../sum(..count..)), position = position_dodge()) + scale_y_continuous(labels = scales::percent) + xlab("Opinion") + ylab("Percentage of Switchers") + ggtitle("President 2012 Switchers by Opinion on Immigration") + scale_x_continuous(breaks = c(1, 2), label = c("Yes", "No")) + theme_classic() + scale_fill_manual("Voted for", labels = c("Obama-Romney", "McCain-Obama"), values=c("red", "blue"))
+
+# immigration - deny citizenship
+
+switchers %>%
+  filter(p12switch == 1) %>%
+  ggplot(aes(immg.citzdenial12, ..prop.., fill = reorder(presvote12, immg.citzdenial12)), stat = "count") + geom_bar(aes(y = ..count../sum(..count..)), position = position_dodge()) + scale_y_continuous(labels = scales::percent) + xlab("Opinion") + ylab("Percentage of Switchers") + ggtitle("President 2012 Switchers by Opinion on Immigration") + scale_x_continuous(breaks = c(1, 2), label = c("Yes", "No")) + theme_classic() + scale_fill_manual("Voted for", labels = c("Obama-Romney", "McCain-Obama"), values=c("red", "blue"))
+
+# abortion
+
+switchers %>%
+  filter(p12switch == 1, abortion12 < 5) %>% # abortion filter drops NAs
+  ggplot(aes(abortion12, ..prop.., fill = reorder(presvote12, abortion12)), stat = "count") + geom_bar(aes(y = ..count../sum(..count..)), position = position_dodge()) + scale_y_continuous(labels = scales::percent) + xlab("Opinion") + ylab("Percentage of Switchers") + ggtitle("President 2012 Switchers by Opinion on Immigration") + scale_x_continuous(breaks = c(1, 2, 3, 4), label = c("By law, abortion should never be permitted", "The law should permit abortion only in case of rape, incest or when the woman's life is in danger", "The law should permit abortion for reasons other than rape, incest, or danger to the woman's life, but only after the need for the abortion has been clearly established", "By law, a woman should always be able to obtain an abortion as a matter of personal choice")) + theme_classic() + scale_fill_manual("Voted for", labels = c("Obama-Romney", "McCain-Obama"), values=c("red", "blue"))
+
+# gay marriage
+
+switchers %>%
+  filter(p12switch == 1, gaymarriage12 < 3) %>% # gay marriage filter drops NAs
+  ggplot(aes(gaymarriage12, ..prop.., fill = reorder(presvote12, gaymarriage12)), stat = "count") + geom_bar(aes(y = ..count../sum(..count..)), position = position_dodge()) + scale_y_continuous(labels = scales::percent) + labs(title = "President 2012 Switchers by Opinion on Gay Marriage", x = "Opinion", y = "Percentage of Switchers") + scale_x_continuous(breaks = c(1, 2), label = c("Yes", "No")) + theme_classic() + scale_fill_manual("Voted for", labels = c("Obama-Romney", "McCain-Obama"), values=c("red", "blue"))
+
+```
+
+
+```{r demographic plots of switchers, echo = FALSE}
 
 # Who are these switchers? 
 
@@ -170,10 +237,10 @@ s5 <- switchers %>%
 
 s6 <- switchers %>%
   filter(p12switch == 1) %>%
-  ggplot(aes(income.12, ..prop.., fill = reorder(presvote12, income.12)), stat = "count") + geom_bar(aes(y = ..count../sum(..count..))) + scale_y_continuous(labels = scales::percent) + xlab("Income of Switchers") + ylab("Percentage of Switchers") + ggtitle("President 2012 Switchers by Income") + scale_x_continuous(breaks = c(1, 2, 3, 4, 5, 6), label = c("0-29,999", "30,000-59,999", "60,000-99,999", "100,000-149,999", "150,000+", "Didn't say/Skipped/Not asked")) + theme(panel.background = element_rect("white"), axis.line.x.bottom = element_line("black"), axis.line.y.left = element_line("black")) + scale_fill_manual("Voted for", labels = c("Obama-Romney", "McCain-Obama"), values=c("red", "blue")) + coord_flip()
+  ggplot(aes(income.12, ..prop.., fill = reorder(presvote12, income.12)), stat = "count") + geom_bar(aes(y = ..count../sum(..count..))) + scale_y_continuous(labels = scales::percent) + xlab("Income of Switchers") + ylab("Percentage of Switchers") + ggtitle("President 2012 Switchers by Income") + scale_x_continuous(breaks = c(1, 2, 3, 4, 5, 6), label = c("0-29,999", "30,000-59,999", "60,000-99,999", "100,000-149,999", "150,000+", "Didn't say/Skipped/Not asked")) + theme(panel.background = element_rect("white"), axis.line.x.bottom = element_line("black"), axis.line.y.left = element_line("black")) + scale_fill_manual("Voted for", labels = c("McCain-Obama", "Obama-Romney"), values=c("blue", "red")) + coord_flip()
 ```
 
-```{r, include = FALSE}
+```{r cleaning data to compare switchers to electorate, include = FALSE}
 
 # Comparing switchers to voters in general
   # Keeping only the variables we want and adding new variables to indicate
@@ -219,7 +286,7 @@ CCES_Panel <- CCES_Panel %>%
                               faminc_14 >= 12 & faminc_14 < 33 ~ '5', faminc_14 >= 32 | is.na(faminc_14) ~ '6'))
 ```
 
-```{r, echo = FALSE}
+```{r comparing switchers to electorate w/ demographics, echo = FALSE}
 
 # How Pres 2012 switchers compare to the electorate by
   # race:
@@ -320,7 +387,7 @@ CCES_Panel %>%
   coord_flip()
 ```
 
-```{r, echo = FALSE}
+```{r regression, echo = FALSE}
 
 # regression exploration on race and pres. 2012 switching
   # Making a set dummy variables for race and a new categorical variable for race
@@ -350,10 +417,17 @@ summary(mod1)
 mod2 <- glm(p12switch ~ gender_12 + age12 + ideo5_12 + pid3_12, binomial, CCES_Panel.reg)
 
 summary(mod2)
+
+# creating a person and testing predict
+maya <- tibble(gender_12 = 0, age12 = 38, ideo5_12 = 2, pid3_12 = 1)
+
+predict(mod1, newdata = maya, interval = "confidence")
+
+predict(mod2, newdata = maya, interval = "confidence")
 ```
 
 
-```{r, echo = FALSE}
+```{r general plots, echo = FALSE}
 
 # some plots
 

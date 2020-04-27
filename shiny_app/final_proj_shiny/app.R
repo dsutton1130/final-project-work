@@ -27,14 +27,22 @@ ui <- fluidPage(navbarPage("Switchers",
                                                                h4(strong("About this Project"), align = "center"),          
 
                                                                
-                                                               p("This project investigates people who vote for one major
+                                                               p("This project investigates switchers - people who vote for one major
                                                                party's candidate in an election and then vote for the other
-                                                               major party's candidate in the following election. These voters
-                                                               are knowns as switchers. In this project I use survey responses on
-                                                               a wide variety of subjects (e.g., demographics, policy positions, life
-                                                               events) to compare switchers to the general electorate and present
-                                                               a profile of switchers. The data presented here comes from the 2010-2014
-                                                               Cooperative Congressional Election Study Panel Survey."))),
+                                                               major party's candidate in the following election. In this project I use
+                                                               survey responses on a wide variety of subjects - such as, demographics, policy
+                                                               positions and life events - to compare switchers to the general electorate and
+                                                               present a profile of the switchers themselves. The data presented here comes from
+                                                               the 2010-2014 Cooperative Congressional Election Study Panel Survey."),
+                                             
+                                             br(),
+                                             
+                                             p("The particular group of switchers examined here are the 2012 Presidential election switchers in the
+                                               United States. These switchers can be divided neatly into two groups - 1) Those who voted for the Republican
+                                               candidate (John McCain) in 2008 and for the Democratic candidate (Barack Obama) in 2012 and 2) Those who voted for
+                                               the Democratic candidate (Obama) in 2008 and for the Republican candidate (Mitt Romney) in 2012."))),
+                           
+                            
                            tabPanel("Graphics",
                                     tabsetPanel(
                                         tabPanel("Who Switches?",
@@ -134,7 +142,7 @@ server <- function(input, output, session){
                                                                                "45-54", "55-64", "65-74", "75-84",
                                                                                "85-94")) +
                 theme_classic() +
-                scale_fill_manual(na.translate = F, "Group", labels = c("Electorate", "Switchers"), values=c("dark grey", "purple"))
+                scale_fill_manual(na.translate = F, "Group", labels = c("Switchers", "Electorate"), values=c("purple", "dark grey"))
             
         } else if(input$plot1 == "educ_12"){
             CCES_Panel %>%
@@ -184,7 +192,7 @@ server <- function(input, output, session){
                                                                          "60,000-99,999", "100,000-149,999",
                                                                          "150,000+", "Didn't say/Skipped/Not asked")) +
                 theme_classic() +
-                scale_fill_manual(na.translate = F, "Group", labels = c("Electorate", "Switchers"), values=c("dark grey", "purple")) +
+                scale_fill_manual(na.translate = F, "Group", labels = c("Switchers", "Electorate"), values=c("purple", "dark grey")) +
                 coord_flip()
         }
         
@@ -220,7 +228,7 @@ server <- function(input, output, session){
                 scale_x_continuous(breaks = c(1, 2), label = c("Male", "Female")) +
                 theme(panel.background = element_rect("white"), axis.line.x.bottom = element_line("black"),
                       axis.line.y.left = element_line("black")) + scale_fill_manual("Voted for",
-                                                                                    labels = c("Romney", "Obama"),
+                                                                                    labels = c("Obama-Romney", "McCain-Obama"),
                                                                                     values=c("red", "blue"))
             
         } else if(input$plot2 == "pres.agegroup12"){
@@ -237,7 +245,7 @@ server <- function(input, output, session){
                 scale_y_continuous(labels = scales::percent) + theme(panel.background = element_rect("white"),
                                                                      axis.line.x.bottom = element_line("black"),
                                                                      axis.line.y.left = element_line("black")) +
-                scale_fill_manual("Voted for", labels = c("Romney", "Obama"), values=c("red", "blue"))
+                scale_fill_manual("Voted for", labels = c("Obama-Romney", "McCain-Obama"), values=c("red", "blue"))
             
         } else if(input$plot2 == "educ_12"){
             switchers %>%
@@ -253,7 +261,7 @@ server <- function(input, output, session){
                                                                            "4-year", "Post-grad")) +
                 theme(panel.background = element_rect("white"), axis.line.x.bottom = element_line("black"),
                       axis.line.y.left = element_line("black")) + scale_fill_manual("Voted for",
-                                                                                    labels = c("Romney", "Obama"),
+                                                                                    labels = c("Obama-Romney", "McCain-Obama"),
                                                                                     values=c("red", "blue")) +
                 coord_flip()
             
@@ -269,7 +277,7 @@ server <- function(input, output, session){
                                                                      "Republican","Other")) +
                 theme(panel.background = element_rect("white"), axis.line.x.bottom = element_line("black"),
                       axis.line.y.left = element_line("black")) + scale_fill_manual("Voted for",
-                                                                                    labels = c("Romney", "Obama"),
+                                                                                    labels = c("Obama-Romney", "McCain-Obama"),
                                                                                     values=c("red", "blue"))
             
         } else if(input$plot2 == "income.12"){
@@ -285,9 +293,8 @@ server <- function(input, output, session){
                                                                            "150,000+", "Didn't say/Skipped/Not asked")) +
                 theme(panel.background = element_rect("white"), axis.line.x.bottom = element_line("black"),
                       axis.line.y.left = element_line("black")) + scale_fill_manual("Voted for",
-                                                                                    labels = c("Obama-Romney",
-                                                                                               "McCain-Obama"),
-                                                                                    values=c("red", "blue")) +
+                                                                                    labels = c("McCain-Obama", "Obama-Romney"),
+                                                                                    values=c("blue", "red")) +
                 coord_flip()
         }
         
