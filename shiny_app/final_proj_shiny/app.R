@@ -192,7 +192,7 @@ server <- function(input, output, session){
                                                                          "60,000-99,999", "100,000-149,999",
                                                                          "150,000+", "Didn't say/Skipped/Not asked")) +
                 theme_classic() +
-                scale_fill_manual(na.translate = F, "Group", labels = c("Switchers", "Electorate"), values=c("purple", "dark grey")) +
+                scale_fill_manual(na.translate = F, "Group", labels = c("Electorate", "Switchers"), values=c("dark grey", "purple")) +
                 coord_flip()
         }
         

@@ -188,8 +188,14 @@ switchers %>%
   filter(p12switch == 1, gaymarriage12 < 3) %>% # gay marriage filter drops NAs
   ggplot(aes(gaymarriage12, ..prop.., fill = reorder(presvote12, gaymarriage12)), stat = "count") + geom_bar(aes(y = ..count../sum(..count..)), position = position_dodge()) + scale_y_continuous(labels = scales::percent) + labs(title = "President 2012 Switchers by Opinion on Gay Marriage", x = "Opinion", y = "Percentage of Switchers") + scale_x_continuous(breaks = c(1, 2), label = c("Yes", "No")) + theme_classic() + scale_fill_manual("Voted for", labels = c("Obama-Romney", "McCain-Obama"), values=c("red", "blue"))
 
-```
+# affirmative action
 
+switchers %>%
+  filter(p12switch == 1) %>%
+  ggplot(aes(affirmact12, ..prop.., fill = reorder(presvote12, affirmact12)), stat = "count") + geom_bar(aes(y = ..count../sum(..count..)), position = position_dodge()) + scale_y_continuous(labels = scales::percent) + labs(title = "President 2012 Switchers by Opinion on Affirmative Action", x = "Opinion", y = "Percentage of Switchers") + scale_x_continuous(breaks = c(1, 2, 3, 4), label = c("Strongly support", "Somewhat support", "Somewhat oppose", "Strongly oppose")) + theme_classic() + scale_fill_manual("Voted for", labels = c("McCain-Obama", "Obama-Romney"), values=c("blue", "red"))
+
+
+```
 
 ```{r demographic plots of switchers, echo = FALSE}
 
@@ -410,21 +416,32 @@ CCES_Panel.reg <- CCES_Panel %>%
 
 cces.test <- CCES_Panel.reg %>% filter(ideo5_12 < 6, pid3_12 < 4) %>% mutate(ideo5_12 = ifelse(ideo5_12 < 3, 1, ifelse(ideo5_12 == 3, 2, ifelse(ideo5_12 < 3, 3, ideo5_12))), pid3_12 = ifelse(pid3_12 == 2, 3, ifelse(pid3_12 == 3, 2, pid3_12)))
 
-mod1 <- glm(p12switch ~ gender_12 + age12 + ideo5_12 + pid3_12, binomial, cces.test)
+mod1 <- glm(p12switch ~ gender_12 + age12 + race_12_char + pid3_12, binomial, cces.test)
 
 summary(mod1)
 
-mod2 <- glm(p12switch ~ gender_12 + age12 + ideo5_12 + pid3_12, binomial, CCES_Panel.reg)
+mod2 <- glm(p12switch ~ gender_12 + age12 + race_12_char + pid3_12, binomial, CCES_Panel.reg)
 
 summary(mod2)
 
 # creating a person and testing predict
-maya <- tibble(gender_12 = 0, age12 = 38, ideo5_12 = 2, pid3_12 = 1)
+maya <- tibble(gender_12 = 0, age12 = 38, pid3_12 = 1, race_12_char = "other")
 
 predict(mod1, newdata = maya, interval = "confidence")
 
 predict(mod2, newdata = maya, interval = "confidence")
 ```
+
+```{r visualizing, echo = FALSE}
+
+
+CCES_Panel %>% filter(p12switch < 2, CC12_302 < 6) %>% group_by(CC12_302) %>% summarize(avg_p12switch = mean(p12switch), emplogit = qlogis(avg_p12switch)) %>% ggplot(aes(CC12_302, emplogit)) + geom_point() + geom_smooth(method = "lm") + labs(x = "Opinion", y = "Empirical logits") + scale_x_continuous(breaks = c(1, 2, 3, 4, 5), label = c("Gotten much better", "Gotten better", "Stayed about the same", "Gotten Worse", "Gotten much worse")) + theme_classic()
+
+# check out stephcheng.shinyapps.
+
+```
+
+
 
 
 ```{r general plots, echo = FALSE}
