@@ -69,7 +69,7 @@ house14_vars <- house14 %>%
   mutate("Age.14" = (2014 - birthyr_14))
 
 pres12_vars <- pres12 %>%
-  subset(select = c(caseid, birthyr_12, gender_12, race_12, CC10_317, CC12_410a, CC12_302, CC12_303d, CC12_308a, CC12_308b, CC12_315a, CC12_320, CC12_321, CC12_322_1:CC12_322_6, CC12_324:CC12_329, CC12_341A, CC12_341C:CC12_341F, CC12_341M, CC12_350, CC12_367, CC12_387_1:CC12_387_13, CC12_418aa, CC12_422a:CC12_423bb, pid7_12, pid3_12, ideo5_12, pew_prayer_12, religpew_12, faminc_12, educ_12, StateAbbr_12)) %>%
+  subset(select = c(caseid, birthyr_12, gender_12, race_12, CC10_317, CC12_410a, CC12_302, CC12_303d, CC12_308a, CC12_308b, CC12_315a, CC12_320, CC12_321, CC12_322_1:CC12_322_6, CC12_324:CC12_329, CC12_341A, CC12_341C:CC12_341F, CC12_341M, CC12_350, CC12_367, CC12_387_1, CC12_387_2, CC12_387_3, CC12_387_4, CC12_387_5, CC12_387_6, CC12_387_7, CC12_387_8, CC12_387_9, CC12_387_10, CC12_387_11, CC12_387_12, CC12_387_13, CC12_418aa, CC12_422a:CC12_423bb, pid7_12, pid3_12, ideo5_12, pew_prayer_12, religpew_12, faminc_12, educ_12, StateAbbr_12)) %>%
   mutate("pres.age.12" = (2012 - birthyr_12), pres.agegroup12 = case_when(pres.age.12 >= 18 & pres.age.12 <= 24 ~ '1', pres.age.12 >= 25 & pres.age.12 <= 34 ~ '2', pres.age.12 >= 35 & pres.age.12 <= 44 ~ '3', pres.age.12 >= 45 & pres.age.12 <= 54 ~ '4', pres.age.12 >= 55 & pres.age.12 <= 64 ~ '5', pres.age.12 >= 65 & pres.age.12 <= 74 ~ '6', pres.age.12 >= 75 & pres.age.12 <= 84 ~ '7', pres.age.12 >= 85 & pres.age.12 <= 94 ~ '8')) 
 
   # Making variable numeric
@@ -82,7 +82,7 @@ house12_vars <- rename(house12_vars, housevote10 = CC10_412, housevote12 = CC12_
 
 house14_vars <- rename(house14_vars, housevote12 = CC12_412, housevote14 = CC14_412, economy14 = CC14_302, fedtax.retro14 = CC14_303d, obama.app14 = CC14_308a, congress.app14 = CC14_308b, guncontrol14 = CC14_320, climate14 = CC14_321, immg.status14 = CC14_322_1, immg.borderpatrol14 = CC14_322_2, immg.policeqs14 = CC14_322_3, immg.finebiz14 = CC14_322_4, immg.pubgoods14 = CC14_322_5, immg.citzdenial14 = CC14_322_6, abortion14 = CC14_324, jobs.envir14 = CC14_325, gaymarriage14 = CC14_326, affirmact14 = CC14_327, balbudget1.14 = CC14_328, balbudget2.14 = CC14_329, selfideo14 = CC14_341A, obamaideo14 = CC14_341C, demideo14 = CC14_341E, repideo14 = CC14_341F, houserepideo14 = CC14_341M, partyreg14 = CC14_350, repHouserep14 = CC14_367, docvisit14 = CC14_387_1, newchild14 = CC14_387_10, moveoutchild14 = CC14_387_11, newmarriage14 = CC14_387_12, newdivorce14 = CC14_387_13, descriptrep.race.eth14 = CC14_418aa, AAraceresentA14 = CC14_422a, AAraceresentB14 = CC14_422b, Hispraceresent14 = CC14_423aa, state14 = StateAbbr_14)
 
-pres12_vars <- rename(pres12_vars, presvote08 = CC10_317, presvote12 = CC12_410a, economy12 = CC12_302, fedtax.retro12 = CC12_303d, obama.app12 = CC12_308a, congress.app12 = CC12_308b, guncontrol12 = CC12_320, climate12 = CC12_321, immg.status12 = CC12_322_1, immg.borderpatrol12 = CC12_322_2, immg.policeqs12 = CC12_322_3, immg.finebiz12 = CC12_322_4, immg.pubgoods12 = CC12_322_5, immg.citzdenial12 = CC12_322_6, abortion12 = CC12_324, jobs.envir12 = CC12_325, gaymarriage12 = CC12_326, affirmact12 = CC12_327, balbudget1.12 = CC12_328, balbudget2.12 = CC12_329, selfideo12 = CC12_341A, obamaideo12 = CC12_341C, romneyideo12 = CC12_341D, demideo12 = CC12_341E, repideo12 = CC12_341F, houserepideo12 = CC12_341M, partyreg12 = CC12_350, repHouserep12 = CC12_367, docvisit12 = CC12_387_1, newchild12 = CC12_387_10, moveoutchild12 = CC12_387_11, newmarriage12 = CC12_387_12, newdivorce12 = CC12_387_13, descriptrep.race.eth12 = CC12_418aa, AAraceresentA12 = CC12_422a, AAraceresentB12 = CC12_422b, Hispraceresent12 = CC12_423aa, state12 = StateAbbr_12)
+pres12_vars <- rename(pres12_vars, presvote08 = CC10_317, presvote12 = CC12_410a, economy12 = CC12_302, fedtax.retro12 = CC12_303d, obama.app12 = CC12_308a, congress.app12 = CC12_308b, guncontrol12 = CC12_320, climate12 = CC12_321, immg.status12 = CC12_322_1, immg.borderpatrol12 = CC12_322_2, immg.policeqs12 = CC12_322_3, immg.finebiz12 = CC12_322_4, immg.pubgoods12 = CC12_322_5, immg.citzdenial12 = CC12_322_6, abortion12 = CC12_324, jobs.envir12 = CC12_325, gaymarriage12 = CC12_326, affirmact12 = CC12_327, balbudget1.12 = CC12_328, balbudget2.12 = CC12_329, selfideo12 = CC12_341A, obamaideo12 = CC12_341C, romneyideo12 = CC12_341D, demideo12 = CC12_341E, repideo12 = CC12_341F, houserepideo12 = CC12_341M, partyreg12 = CC12_350, repHouserep12 = CC12_367, docvisit12 = CC12_387_1, eroom12 = CC12_387_2, raise12 = CC12_387_3, lostjob12 = CC12_387_4, cutbenefits12 = CC12_387_5, promotion12 = CC12_387_6, betterjob12 = CC12_387_7, trafficticket12 = CC12_387_8, crimevic12 = CC12_387_9, newchild12 = CC12_387_10, moveoutchild12 = CC12_387_11, newmarriage12 = CC12_387_12, newdivorce12 = CC12_387_13, descriptrep.race.eth12 = CC12_418aa, AAraceresentA12 = CC12_422a, AAraceresentB12 = CC12_422b, Hispraceresent12 = CC12_423aa, state12 = StateAbbr_12)
 
   # Making one dataset with all House switchers
 
@@ -262,7 +262,7 @@ CCES_Panel <- CCES_Panel %>%
                     CC12_321, CC14_321, CC12_322_1:CC12_322_6, CC14_322_1:CC14_322_6,
                     CC12_324:CC12_329, CC14_324:CC14_329, CC12_341A, CC14_341A,
                     CC12_341C:CC12_341F, CC14_341C:CC14_341F, CC12_341M, CC14_341M,
-                    CC12_350, CC14_350, CC12_367, CC14_367, CC12_387_1:CC12_387_13,
+                    CC12_350, CC14_350, CC12_367, CC14_367, CC12_387_1, CC12_387_2, CC12_387_3, CC12_387_4, CC12_387_5, CC12_387_6, CC12_387_7, CC12_387_8, CC12_387_9, CC12_387_10, CC12_387_11, CC12_387_12, CC12_387_13,
                     CC14_387_1:CC14_387_13, CC12_418aa, CC14_418aa, CC12_422a:CC12_423bb,
                     CC14_422a:CC14_423bb, pid7_12, pid7_14, pid3_12, pid3_14, ideo5_12,
                     ideo5_14, pew_prayer_12, pew_prayer_14, religpew_12, religpew_14,
@@ -458,14 +458,31 @@ plogis(predict(mod.demo, newdata = maya1))
 
 # modeling and predicting - all variables
 
-mod.all <- glm(p12switch ~  age12 + CC12_302 + CC12_303d + CC12_308a + CC12_320 + CC12_321 + CC12_322_1 + CC12_322_2 + CC12_322_3 + CC12_322_4 + CC12_322_5 + CC12_322_6 + CC12_324 + CC12_325 + CC12_326 + CC12_327 + CC12_328 + CC12_329 + CC12_341A + CC12_341C + CC12_341D + CC12_341E + CC12_341F + CC12_387_1 + CC12_387_10 + CC12_387_11 + CC12_387_12  + CC12_387_13 + CC12_422a + CC12_422b + CC12_423aa + CC12_423bb + educ_12 +  gender_12 + ideo5_12 + income12 + partyreg12.char + pew_prayer_12 + pid3_12 + pvote08 + pvote12 + race_12_char + religpew_12_char + ideo.diff.repub + ideo.diff.dem + ideo.diff.romney + ideo.diff.obama, binomial, predict.CCES)
+mod.all <- glm(p12switch ~  age12 + CC12_302 + CC12_303d + CC12_308a + CC12_320 + CC12_321 + CC12_322_1 + CC12_322_2 + CC12_322_3 + CC12_322_4 + CC12_322_5 + CC12_322_6 + CC12_324 + CC12_325 + CC12_326 + CC12_327 + CC12_328 + CC12_329 + CC12_341A + CC12_341C + CC12_341D + CC12_341E + CC12_341F + CC12_387_1 + CC12_387_2 + CC12_387_3 + CC12_387_4 + CC12_387_5 + CC12_387_6 + CC12_387_7 + CC12_387_8 + CC12_387_9 + CC12_387_10 + CC12_387_11 + CC12_387_12  + CC12_387_13 + CC12_422a + CC12_422b + CC12_423aa + CC12_423bb + educ_12 +  gender_12 + ideo5_12 + income12 + partyreg12.char + pew_prayer_12 + pid3_12 + pvote08 + pvote12 + race_12_char + religpew_12_char + ideo.diff.repub + ideo.diff.dem + ideo.diff.romney + ideo.diff.obama, binomial, predict.CCES)
 
 mod.all %>%
   tidy() %>%
   select(term, estimate, std.error, p.value) %>%
   arrange(p.value)
 
+mod.all %>%
+  tidy() %>%
+  select(term, estimate, std.error, p.value) %>%
+  arrange(std.error)
 
+mod.lifeevents <- glm(p12switch ~ CC12_387_1 + CC12_387_2 + CC12_387_3 + CC12_387_4 + CC12_387_5 + CC12_387_6 + CC12_387_7 + CC12_387_8 + CC12_387_9 + CC12_387_10 + CC12_387_11 + CC12_387_12 + CC12_387_13, binomial, data = predict.CCES)
+
+mod.docvisit <- glm(p12switch ~ CC12_387_1, binomial, data = predict.CCES)
+
+mod.lifeevents %>%
+  tidy() %>%
+  select(term, estimate, std.error, p.value) %>%
+  arrange(p.value)
+
+mod.docvisit %>%
+  tidy() %>%
+  select(term, estimate, std.error, p.value) %>%
+  arrange(p.value)
 
 # demographics variables: age12, educ_12, gender_12, ideo5_12, income12, partyreg12.char
 # pew_prayer_12, pid3_12, pid7_12, pvote08, pvote12, race_12_char, religpew_12
@@ -482,11 +499,81 @@ mod.all %>%
 # Pr(>|z|), .05: partyreg12.char, religpew_12, CC12_322_4
 ```
 
+```{r life events, echo = FALSE}
+
+CCES_Panel$perc.docvisit12 <- 100 * sum(CCES_Panel$CC12_387_1 == 1)/nrow(CCES_Panel)
+
+CCES_Panel$perc.eroom12 <- 100 * sum(CCES_Panel$CC12_387_2 == 1)/nrow(CCES_Panel)
+
+CCES_Panel$perc.raise12 <- 100 * sum(CCES_Panel$CC12_387_3 == 1)/nrow(CCES_Panel)
+         
+CCES_Panel$perc.lostjob12 <- 100 * sum(CCES_Panel$CC12_387_4 == 1)/nrow(CCES_Panel)
+
+CCES_Panel$perc.cutbenefits12 <- 100 * sum(CCES_Panel$CC12_387_5 == 1)/nrow(CCES_Panel)
+
+CCES_Panel$perc.promotion12 <- 100 * sum(CCES_Panel$CC12_387_6 == 1)/nrow(CCES_Panel)
+
+CCES_Panel$perc.betterjob12 <- 100 * sum(CCES_Panel$CC12_387_7 == 1)/nrow(CCES_Panel)
+       
+CCES_Panel$perc.trafficticket12 <- 100 * sum(CCES_Panel$CC12_387_8 == 1)/nrow(CCES_Panel)
+
+CCES_Panel$perc.crimevic12 <- 100 * sum(CCES_Panel$CC12_387_9 == 1)/nrow(CCES_Panel)
+
+CCES_Panel$perc.newchild12 <- 100 * sum(CCES_Panel$CC12_387_10 == 1)/nrow(CCES_Panel)
+
+CCES_Panel$perc.moveoutchild12 <- 100 * sum(CCES_Panel$CC12_387_11 == 1)/nrow(CCES_Panel)
+
+CCES_Panel$perc.newmarriage12 <- 100 * sum(CCES_Panel$CC12_387_12 == 1)/nrow(CCES_Panel)
+
+CCES_Panel$perc.newdivorce12 <- 100 * sum(CCES_Panel$CC12_387_13 == 1)/nrow(CCES_Panel)
+
+pres12_vars$perc.docvisit12 <- 100 * sum(pres12_vars$docvisit12 == 1)/nrow(pres12_vars)
+
+pres12_vars$perc.eroom12 <- 100 * sum(pres12_vars$eroom12 == 1)/nrow(pres12_vars)
+
+pres12_vars$perc.raise12 <- 100 * sum(pres12_vars$raise12 == 1)/nrow(pres12_vars)
+         
+pres12_vars$perc.lostjob12 <- 100 * sum(pres12_vars$lostjob12 == 1)/nrow(pres12_vars)
+
+pres12_vars$perc.cutbenefits12 <- 100 * sum(pres12_vars$cutbenefits12 == 1)/nrow(pres12_vars)
+
+pres12_vars$perc.promotion12 <- 100 * sum(pres12_vars$promotion12 == 1)/nrow(pres12_vars)
+
+pres12_vars$perc.betterjob12 <- 100 * sum(pres12_vars$betterjob12 == 1)/nrow(pres12_vars)
+       
+pres12_vars$perc.trafficticket12 <- 100 * sum(pres12_vars$trafficticket12 == 1)/nrow(pres12_vars)
+
+pres12_vars$perc.crimevic12 <- 100 * sum(pres12_vars$crimevic12 == 1)/nrow(pres12_vars)
+
+pres12_vars$perc.newchild12 <- 100 * sum(pres12_vars$newchild12 == 1)/nrow(pres12_vars)
+
+pres12_vars$perc.moveoutchild12 <- 100 * sum(pres12_vars$moveoutchild12 == 1)/nrow(pres12_vars)
+
+pres12_vars$perc.newmarriage12 <- 100 * sum(pres12_vars$newmarriage12 == 1)/nrow(pres12_vars)
+
+pres12_vars$perc.newdivorce12 <- 100 * sum(pres12_vars$newdivorce12 == 1)/nrow(pres12_vars)
+
+cces.change.lifeevent <- CCES_Panel %>% select(perc.docvisit12:perc.newdivorce12) %>% slice(1)
+
+pres12switch.change.lifeevent <- pres12_vars %>% select(perc.docvisit12:perc.newdivorce12) %>% slice(1)
+
+cces.long.change <- cces.change.lifeevent %>% pivot_longer(perc.docvisit12:perc.newdivorce12)
+
+pres12.long.change <- pres12switch.change.lifeevent %>% pivot_longer(perc.docvisit12:perc.newdivorce12)
+
+diff.lifeevents <- cces.long.change %>%
+  full_join(pres12.long.change, by = 'name') %>%
+  mutate(diff = value.x - value.y)
+
+diff.lifeevents %>%
+  ggplot(aes(diff, name)) + geom_point() + labs(title = "How Switchers and the Electorate Differ", subtitle = "Experiences within the last 2 years", x = "Difference between Electorate and Switchers", y = "Life Event") + theme_minimal() + scale_x_continuous(limits = c(-10, 10)) + scale_y_discrete(label = c("Better job", "Been victim of a crime", "Employee benefits cut", "Visited doctor's office", "Visited emergency room", "Loss of job", "Child moved out", "New child in family", "Divorce", "Marriage", "Promotion at work", "Raise at work", "Traffic ticket"))
+```
+
 ```{r testing best vars model, echo = FALSE}
 
 # model and predict with best variables
 
-mod.bestvars <- glm(p12switch ~ pvote08 + ideo.diff.repub + pid3_12 + CC12_321 + CC12_302 + CC12_322_3 + partyreg12_1 + religpew_12_2, binomial, predict.CCES)
+mod.bestvars <- glm(p12switch ~ pvote08 + ideo.diff.repub + pid3_12 + CC12_321 + CC12_302 + CC12_322_3 + partyreg12_1 + religpew_12_2 + CC12_387_1, binomial, predict.CCES)
 
 # review
 
@@ -495,12 +582,25 @@ mod.bestvars %>%
   select(term, estimate, std.error, p.value) %>%
   arrange(p.value)
 
+mod.bestvars %>%
+  tidy() %>%
+  select(term, estimate, std.error, p.value) %>%
+  arrange(std.error)
+
 # maya model
 
-maya2 <- tibble(pvote08 = 1, ideo.diff.repub = 4, pid3_12 = 2, CC12_321 = 1, CC12_302 = 1, CC12_322_3 = 2, partyreg12_1 = 0, religpew_12_2 = 0)
+maya2 <- tibble(pvote08 = 1, ideo.diff.repub = 4, pid3_12 = 2, CC12_321 = 1, CC12_302 = 1, CC12_322_3 = 2, partyreg12_1 = 0, religpew_12_2 = 0, CC12_387_1 = 1)
 
 plogis(predict(mod.bestvars, newdata = maya2))
 ```
+
+```{r}
+
+mod.voteandideo <- glm(p12switch ~ pvote08 + race_12_2, binomial, predict.CCES)
+
+mod.voteandideo %>% tidy() %>% select(term, estimate, std.error, p.value) %>% arrange(p.value)
+```
+
 
 ```{r checking model, echo = FALSE}
 
@@ -508,20 +608,6 @@ mod.all %>%
   tidy() %>%
   select(term, estimate, std.error, p.value) %>%
   arrange(p.value)
-
-mod.all.check <- mod.all %>%
-  augment(type.predict = "response", type.residuals = "response") %>%
-  mutate(conf.low = .fitted - 1.96 * .se.fit,
-         conf.high = .fitted + 1.96 * .se.fit) %>%
-  select(p12switch, .fitted, conf.low, conf.high, .resid) %>%
-  mutate(bi.fitted = ifelse(.fitted < 0.5, 0, 1),
-         bi.resid = p12switch - bi.fitted,
-         true.positive = ifelse(bi.fitted == 1 & p12switch == 1, 1, 0),
-         false.positive = ifelse(bi.fitted == 1 & p12switch == 0, 1, 0),
-         true.negative = ifelse(bi.fitted == 0 & p12switch == 0, 1, 0),
-         false.negative = ifelse(bi.fitted == 0 & p12switch == 1, 1, 0))
-
-summary(mod.all.check)
 
 mod.bestvars.check <- mod.bestvars %>%
   augment(type.predict = "response", type.residuals = "response") %>%
@@ -533,7 +619,11 @@ mod.bestvars.check <- mod.bestvars %>%
          true.positive = ifelse(bi.fitted == 1 & p12switch == 1, 1, 0),
          false.positive = ifelse(bi.fitted == 1 & p12switch == 0, 1, 0),
          true.negative = ifelse(bi.fitted == 0 & p12switch == 0, 1, 0),
-         false.negative = ifelse(bi.fitted == 0 & p12switch == 1, 1, 0))
+         false.negative = ifelse(bi.fitted == 0 & p12switch == 1, 1, 0),
+         status = case_when(true.positive == 1 ~ "TP",
+                            true.negative == 1 ~ "TN",
+                            false.positive == 1 ~ "FP",
+                            false.negative == 1 ~ "FN"))
 
 summary(mod.bestvars.check)
   
@@ -541,24 +631,29 @@ summary(mod.bestvars.check)
 ```
 
 ```{r}
-model.accuracy <- 100 - sum(abs(mod.all.check$bi.resid))/nrow(mod.all.check)
 
 model.accuracy.bestvars <- 100 - sum(abs(mod.bestvars.check$bi.resid))/nrow(mod.bestvars.check)
-
-mod.all.check.switch <- mod.all.check %>%
-  filter(p12switch == 1)
 
 model.bestvars.check.switch <- mod.bestvars.check %>% filter(p12switch == 1)
 
 # both models tend to predict no switching when switching does indeed occur.
 ```
 
-```{r classification, echo = FALSE}
+```{r plotting status, echo = FALSE}
 
+table(mod.bestvars.check$status)
+
+mod.bestvars.check %>%
+  ggplot(aes(status, .fitted), group = status) +
+  geom_boxplot()
+
+mod.bestvars.check %>%
+  ggplot(aes(status, .fitted), group = status) +
+  geom_point() +
+  geom_jitter()
 
 
 ```
-
 
 ```{r general plots, echo = FALSE}
 

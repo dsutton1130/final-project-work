@@ -29,8 +29,8 @@ ui <- fluidPage(navbarPage("Switchers",
                                                                
                                                                p("This project investigates switchers - people who vote for one major
                                                                party's candidate in an election and then vote for the other
-                                                               major party's candidate in the following election. In this project I use
-                                                               survey responses on a wide variety of subjects - such as, demographics, policy
+                                                               major party's candidate in the following election. I use
+                                                               survey responses on a wide variety of subjects - such as demographics, policy
                                                                positions and life events - to compare switchers to the general electorate and
                                                                present a profile of the switchers themselves. The data presented here comes from
                                                                the 2010-2014 Cooperative Congressional Election Study Panel Survey."),
