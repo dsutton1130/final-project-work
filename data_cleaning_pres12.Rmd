@@ -566,7 +566,7 @@ diff.lifeevents <- cces.long.change %>%
   mutate(diff = value.x - value.y)
 
 diff.lifeevents %>%
-  ggplot(aes(diff, name)) + geom_point() + labs(title = "How Switchers and the Electorate Differ", subtitle = "Experiences within the last 2 years", x = "Difference between Electorate and Switchers", y = "Life Event") + theme_minimal() + scale_x_continuous(limits = c(-10, 10)) + scale_y_discrete(label = c("Better job", "Been victim of a crime", "Employee benefits cut", "Visited doctor's office", "Visited emergency room", "Loss of job", "Child moved out", "New child in family", "Divorce", "Marriage", "Promotion at work", "Raise at work", "Traffic ticket"))
+  ggplot(aes(diff, name)) + geom_point() + labs(title = "How Switchers and the Electorate Differ", subtitle = "Experiences within the last 2 years", x = "Percentage Point Difference between Electorate and Switchers", y = "Life Event") + theme_minimal() + scale_x_continuous(limits = c(-10, 10)) + scale_y_discrete(label = c("Better job", "Been victim of a crime", "Employee benefits cut", "Visited doctor's office", "Visited emergency room", "Loss of job", "Child moved out", "New child in family", "Divorce", "Marriage", "Promotion at work", "Raise at work", "Traffic ticket"))
 ```
 
 ```{r testing best vars model, echo = FALSE}

@@ -6,6 +6,7 @@ library(ggplot2)
 
 CCES_Panel <- read_rds("CCES.rds")
 switchers <- read_rds("switchers.rds")
+pres12_vars <- read_rds("pres12_vars.rds")
 
 ui <- fluidPage(navbarPage("Switchers",
                            theme = shinytheme("simplex"),
@@ -29,8 +30,8 @@ ui <- fluidPage(navbarPage("Switchers",
                                              
                                              p("This project investigates switchers - people who vote for one major
                                                                party's candidate in an election and then vote for the other
-                                                               major party's candidate in the following election. In this project I use
-                                                               survey responses on a wide variety of subjects - such as, demographics, policy
+                                                               major party's candidate in the following election. I use
+                                                               survey responses on a wide variety of subjects - such as demographics, policy
                                                                positions and life events - to compare switchers to the general electorate and
                                                                present a profile of the switchers themselves. The data presented here comes from
                                                                the 2010-2014 Cooperative Congressional Election Study Panel Survey."),
@@ -74,9 +75,36 @@ ui <- fluidPage(navbarPage("Switchers",
                                                                                 "Party" = "partyreg12",
                                                                                 "Income" = "income.12"),
                                                                  selected = "Race")),
-                                                 mainPanel(plotOutput("switchers")))))))
+                                                 mainPanel(plotOutput("switchers"))),
+                                        tabPanel("Life Events",
+                                                 h3("Life Events in the Previous 2 Years"),
+                                                 mainPanel(plotOutput("Life.Events")),
+                                                 p("Voters were asked if they had experienced any of the specified life events
+                                               (listed on the graph's y-axis) over the past 2 years. This graph indicates the
+                                               difference in percentage points between those who answered 'yes' in the general
+                                               electorate and those who answered 'yes' in the group of 2012 Presidential election
+                                               switchers."),
+                                                 br(),
+                                                 p("There does not seem to be much difference between the electorate and switchers
+                                             regarding the percentage of each group which experienced these life events about
+                                             2 years before the 2012 Presidential election."))))))
 
 server <- function(input, output, session){
+    
+    output$Life.Events <- renderPlot({
+        diff.lifeevents %>%
+            ggplot(aes(diff, name)) +
+            geom_point() +
+            labs(title = "How Switchers and the Electorate Differ",
+                 subtitle = "Experiences within the last 2 years",
+                 x = "Percentage Point Difference between Electorate and Switchers", y = "Life Event", caption =
+                     "Source: 2010-2014 Cooperative Congressional Election Study Panel Survey") +
+            theme_minimal() + scale_x_continuous(limits = c(-10, 10)) +
+            scale_y_discrete(label = c("Better job", "Been victim of a crime", "Employee benefits cut",
+                                       "Visited doctor's office", "Visited emergency room", "Loss of job",
+                                       "Child moved out", "New child in family", "Divorce", "Marriage",
+                                       "Promotion at work", "Raise at work", "Traffic ticket"))
+    })
     
     output$switchers1 <- renderImage({
         
@@ -142,7 +170,7 @@ server <- function(input, output, session){
                                                                                "45-54", "55-64", "65-74", "75-84",
                                                                                "85-94")) +
                 theme_classic() +
-                scale_fill_manual(na.translate = F, "Group", labels = c("Electorate", "Switchers"), values=c("dark grey", "purple"))
+                scale_fill_manual(na.translate = F, "Group", labels = c("Switchers", "Electorate"), values=c("purple", "dark grey"))
             
         } else if(input$plot1 == "educ_12"){
             CCES_Panel %>%
@@ -204,24 +232,20 @@ server <- function(input, output, session){
             switchers %>%
                 filter(p12switch == 1) %>%
                 ggplot(aes(race_12, ..prop.., fill = reorder(presvote12, race_12)), stat = "count") +
-                geom_bar(aes(y = ..count../sum(..count..))) + scale_y_continuous(labels = scales::percent) +
-                xlab("Race of Switchers") + ylab("Percentage of Switchers") +
-                labs(title = "President 2012 Switchers by Race", caption =
-                         "Source: 2010-2014 Cooperative Congressional Election Study Panel Survey") +
-                scale_x_continuous(breaks = c(1, 2, 3, 4, 5, 6, 7), label = c("White", "Black","Hispanic",
-                                                                              "Asian","Native American",
-                                                                              "Mixed", "Other")) +
-                theme(panel.background = element_rect("white"), axis.line.x.bottom = element_line("black"),
-                      axis.line.y.left = element_line("black")) + scale_fill_manual("Voted for",
-                                                                                    labels = c("Obama-Romney",
-                                                                                               "McCain-Obama"),
-                                                                                    values=c("red", "blue"))
+                geom_bar(aes(y = ..count../sum(..count..)), position = position_dodge()) +
+                scale_y_continuous(labels = scales::percent) + labs(x = "Race of Switchers",
+                                                                    y = "Percentage of Switchers",
+                                                                    title = "President 2012 Switchers by Race") +
+                scale_x_continuous(breaks = c(1, 2, 3, 4, 5, 6, 7),
+                                   label = c("White", "Black", "Hispanic", "Asian", "Native American", "Mixed", "Other")) +
+                theme_classic() + scale_fill_manual("Voted for", labels = c("Obama-Romney", "McCain-Obama"),
+                                                    values=c("red", "blue"))
             
         } else if(input$plot2 == "gender_12"){
             switchers %>%
                 filter(p12switch == 1) %>%
                 ggplot(aes(gender_12, ..prop.., fill = reorder(presvote12, gender_12)), stat = "count") +
-                geom_bar(aes(y = ..count../sum(..count..))) + scale_y_continuous(labels = scales::percent) +
+                geom_bar(aes(y = ..count../sum(..count..)), position = position_dodge()) + scale_y_continuous(labels = scales::percent) +
                 xlab("Gender of Switchers") + ylab("Percentage of Switchers") +
                 labs(title = "President 2012 Switchers by Gender", caption =
                          "Source: 2010-2014 Cooperative Congressional Election Study Panel Survey") +
@@ -235,7 +259,7 @@ server <- function(input, output, session){
             switchers %>%
                 filter(p12switch == 1) %>%
                 ggplot(aes(pres.agegroup12, ..prop.., fill = reorder(presvote12, pres.agegroup12)), stat = "count") +
-                geom_bar(aes(y = ..count../sum(..count..))) + xlab("Age of Switchers") +
+                geom_bar(aes(y = ..count../sum(..count..)), position = position_dodge()) + xlab("Age of Switchers") +
                 ylab("Percentage of Switchers") +
                 labs(title = "President 2012 Switchers by Age", caption =
                          "Source: 2010-2014 Cooperative Congressional Election Study Panel Survey") +
@@ -251,7 +275,7 @@ server <- function(input, output, session){
             switchers %>%
                 filter(p12switch == 1) %>%
                 ggplot(aes(educ_12, ..prop.., fill = reorder(presvote12, educ_12)), stat = "count") +
-                geom_bar(aes(y = ..count../sum(..count..))) + scale_y_continuous(labels = scales::percent) +
+                geom_bar(aes(y = ..count../sum(..count..)), position = position_dodge()) + scale_y_continuous(labels = scales::percent) +
                 xlab("Education Level") + ylab("Percentage of Switchers") +
                 labs(title = "President 2012 Switchers by Education", caption =
                          "Source: 2010-2014 Cooperative Congressional Election Study Panel Survey") +
@@ -269,7 +293,7 @@ server <- function(input, output, session){
             switchers %>%
                 filter(p12switch == 1, partyreg12 < 5) %>%
                 ggplot(aes(partyreg12, ..prop.., fill = reorder(presvote12, partyreg12)), stat = "count") +
-                geom_bar(aes(y = ..count../sum(..count..))) + scale_y_continuous(labels = scales::percent) +
+                geom_bar(aes(y = ..count../sum(..count..)), position = position_dodge()) + scale_y_continuous(labels = scales::percent) +
                 xlab("Party of Switchers") + ylab("Percentage of Switchers") +
                 labs(title = "President 2012 Switchers by Party", caption =
                          "Source: 2010-2014 Cooperative Congressional Election Study Panel Survey") +
@@ -284,7 +308,7 @@ server <- function(input, output, session){
             switchers %>%
                 filter(p12switch == 1) %>%
                 ggplot(aes(income.12, ..prop.., fill = reorder(presvote12, income.12)), stat = "count") +
-                geom_bar(aes(y = ..count../sum(..count..))) + scale_y_continuous(labels = scales::percent) +
+                geom_bar(aes(y = ..count../sum(..count..)), position = position_dodge()) + scale_y_continuous(labels = scales::percent) +
                 xlab("Income of Switchers") + ylab("Percentage of Switchers") +
                 labs(title = "President 2012 Switchers by Income", caption =
                          "Source: 2010-2014 Cooperative Congressional Election Study Panel Survey") +
