@@ -608,8 +608,6 @@ mod.bestvars.check <- mod.bestvars %>%
 
 table(mod.bestvars.check$status)
 
-table(mod.all.check$status)
-
 besvars.accuracy <- 100 - sum(abs(mod.bestvars.check$bi.resid))/nrow(mod.bestvars.check)
 
 bestvars.check.switch <- mod.bestvars.check %>% filter(p12switch == 1)
