@@ -78,7 +78,7 @@ ui <- fluidPage(navbarPage("Switchers",
                                                  mainPanel(plotOutput("switchers"))),
                                         tabPanel("Life Events",
                                                  h3("Life Events in the Previous 2 Years"),
-                                                 mainPanel(plotOutput("Life.Events")),
+                                                 mainPanel(plotOutput("pres12_vars")),
                                                  p("Voters were asked if they had experienced any of the specified life events
                                                (listed on the graph's y-axis) over the past 2 years. This graph indicates the
                                                difference in percentage points between those who answered 'yes' in the general
@@ -87,24 +87,10 @@ ui <- fluidPage(navbarPage("Switchers",
                                                  br(),
                                                  p("There does not seem to be much difference between the electorate and switchers
                                              regarding the percentage of each group which experienced these life events about
-                                             2 years before the 2012 Presidential election."))))))
+                                             2 years before the 2012 Presidential election."))
+                                        ))))
 
 server <- function(input, output, session){
-    
-    output$Life.Events <- renderPlot({
-        diff.lifeevents %>%
-            ggplot(aes(diff, name)) +
-            geom_point() +
-            labs(title = "How Switchers and the Electorate Differ",
-                 subtitle = "Experiences within the last 2 years",
-                 x = "Percentage Point Difference between Electorate and Switchers", y = "Life Event", caption =
-                     "Source: 2010-2014 Cooperative Congressional Election Study Panel Survey") +
-            theme_minimal() + scale_x_continuous(limits = c(-10, 10)) +
-            scale_y_discrete(label = c("Better job", "Been victim of a crime", "Employee benefits cut",
-                                       "Visited doctor's office", "Visited emergency room", "Loss of job",
-                                       "Child moved out", "New child in family", "Divorce", "Marriage",
-                                       "Promotion at work", "Raise at work", "Traffic ticket"))
-    })
     
     output$switchers1 <- renderImage({
         
@@ -323,6 +309,22 @@ server <- function(input, output, session){
         }
         
         
+    })
+    
+    output$pres12_vars <- renderPlot({
+        diff.lifeevents %>%
+            ggplot(aes(diff, name)) +
+            geom_point() +
+            labs(title = "How Switchers and the Electorate Differ",
+                 subtitle = "Experiences within the last 2 years",
+                 x = "Percentage Point Difference between Electorate and Switchers", y = "Life Event", caption =
+                     "Source: 2010-2014 Cooperative Congressional Election Study Panel Survey") +
+            theme_minimal() +
+            scale_x_continuous(limits = c(-10, 10)) +
+            scale_y_discrete(label = c("Better job", "Been victim of a crime", "Employee benefits cut",
+                                       "Visited doctor's office", "Visited emergency room", "Loss of job",
+                                       "Child moved out", "New child in family", "Divorce", "Marriage",
+                                       "Promotion at work", "Raise at work", "Traffic ticket"))
     })
 }
 
