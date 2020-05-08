@@ -121,7 +121,7 @@ switchers$income.12 <- as.numeric(switchers$income.12)
 switchers$income.14 <- as.numeric(switchers$income.14)
 ```
 
-```{r policy and public opinion plots for switchers}
+```{r policy and public opinion plots for switchers, echo = FALSE}
 
 # economy
 
@@ -370,12 +370,17 @@ CCES_Panel %>%
   ggplot(aes(partyreg12, pct, fill = factor(p12switch))) +
   geom_col(position = position_dodge()) +
   scale_y_continuous(labels = scales::percent) +
-  labs(x = "Party", y = "Percentage of Group", title = "How Switchers Compare to Electorate") +
-  scale_x_continuous(breaks = c(1, 2, 3, 4), label = c("None/Independent/Didn't Say",
-                                                           "Democrat", "Republican",
-                                                           "Other")) +
+  labs(x = "Party",
+       y = "Percentage of Group",
+       title = "How Switchers Compare to Electorate") +
+  scale_x_continuous(breaks = c(1, 2, 3, 4),
+                     label = c("None/Independent/Didn't Say", "Democrat",
+                               "Republican", "Other")) +
   theme_classic() +
-  scale_fill_manual(na.translate = F, "Group", labels = c("Electorate", "Switchers"), values=c("dark grey", "purple"))
+  scale_fill_manual(na.translate = F,
+                    "Group",
+                    labels = c("Electorate", "Switchers"),
+                    values=c("dark grey", "purple"))
 
   # income
   
@@ -386,16 +391,22 @@ CCES_Panel %>%
   ggplot(aes(income12, pct, fill = factor(p12switch))) +
   geom_col(position = position_dodge()) +
   scale_y_continuous(labels = scales::percent) +
-  labs(x = "Income", y = "Percentage of Group", title = "How Switchers Compare to Electorate") +
-  scale_x_discrete(breaks = c(1, 2, 3, 4, 5, 6), label = c("0-29,999", "30,000-59,999",
-                                                             "60,000-99,999", "100,000-149,999",
-                                                             "150,000+", "Didn't say/Skipped/Not asked")) +
+  labs(x = "Income",
+       y = "Percentage of Group",
+       title = "How Switchers Compare to Electorate") +
+  scale_x_discrete(breaks = c(1, 2, 3, 4, 5, 6),
+                   label = c("0-29,999", "30,000-59,999","60,000-99,999",
+                             "100,000-149,999", "150,000+",
+                             "Didn't say/Skipped/Not asked")) +
   theme_classic() +
-  scale_fill_manual(na.translate = F, "Group", labels = c("Electorate", "Switchers"), values=c("dark grey", "purple")) +
+  scale_fill_manual(na.translate = F,
+                    "Group",
+                    labels = c("Electorate", "Switchers"),
+                    values=c("dark grey", "purple")) +
   coord_flip()
 ```
 
-```{r regression, echo = FALSE}
+```{r prepping for modeling, echo = FALSE}
 
 # regression exploration on race and pres. 2012 switching
   # Making a set dummy variables for race and a new categorical variable for race
@@ -436,70 +447,16 @@ predict.CCES <- CCES_Panel.reg %>%
          ideo.diff.romney = abs(CC12_341A - CC12_341D),
          ideo.diff.dem = abs(CC12_341A - CC12_341E),
          ideo.diff.repub = abs(CC12_341A - CC12_341F))
+```
 
-# Modeling and predicting - demographics
-
-mod.demo <- glm(p12switch ~ gender_12 + age12 + race_12_char + religpew_12_char + pid3_12 + partyreg12.char + income12 + educ_12, binomial, predict.CCES)
-
-summary(mod.demo)
-
-# creating a person and testing predict
-
-maya1 <- tibble(gender_12 = 0, age12 = 38, pid3_12 = 2, race_12_char = "white", income12 = 3, partyreg12.char = "democrat", educ_12 = 6, religpew_12_char = "Jewish")
-
-predict(mod.demo, newdata = maya1)
-
-augment(mod.demo, newdata = maya1)
-
-plogis(predict(mod.demo, newdata = maya1))
-
-# most significant factors seem to be: pid3_12, educ_12, partyreg12.char,
-# race_12_char, age12
-
-# modeling and predicting - all variables
-
-mod.all <- glm(p12switch ~  age12 + CC12_302 + CC12_303d + CC12_308a + CC12_320 + CC12_321 + CC12_322_1 + CC12_322_2 + CC12_322_3 + CC12_322_4 + CC12_322_5 + CC12_322_6 + CC12_324 + CC12_325 + CC12_326 + CC12_327 + CC12_328 + CC12_329 + CC12_341A + CC12_341C + CC12_341D + CC12_341E + CC12_341F + CC12_387_1 + CC12_387_2 + CC12_387_3 + CC12_387_4 + CC12_387_5 + CC12_387_6 + CC12_387_7 + CC12_387_8 + CC12_387_9 + CC12_387_10 + CC12_387_11 + CC12_387_12  + CC12_387_13 + CC12_422a + CC12_422b + CC12_423aa + CC12_423bb + educ_12 +  gender_12 + ideo5_12 + income12 + partyreg12.char + pew_prayer_12 + pid3_12 + pvote08 + pvote12 + race_12_char + religpew_12_char + ideo.diff.repub + ideo.diff.dem + ideo.diff.romney + ideo.diff.obama, binomial, predict.CCES)
-
-mod.all %>%
-  tidy() %>%
-  select(term, estimate, std.error, p.value) %>%
-  arrange(p.value)
-
-mod.all %>%
-  tidy() %>%
-  select(term, estimate, std.error, p.value) %>%
-  arrange(std.error)
+```{r life events, echo = FALSE}
 
 mod.lifeevents <- glm(p12switch ~ CC12_387_1 + CC12_387_2 + CC12_387_3 + CC12_387_4 + CC12_387_5 + CC12_387_6 + CC12_387_7 + CC12_387_8 + CC12_387_9 + CC12_387_10 + CC12_387_11 + CC12_387_12 + CC12_387_13, binomial, data = predict.CCES)
-
-mod.docvisit <- glm(p12switch ~ CC12_387_1, binomial, data = predict.CCES)
 
 mod.lifeevents %>%
   tidy() %>%
   select(term, estimate, std.error, p.value) %>%
   arrange(p.value)
-
-mod.docvisit %>%
-  tidy() %>%
-  select(term, estimate, std.error, p.value) %>%
-  arrange(p.value)
-
-# demographics variables: age12, educ_12, gender_12, ideo5_12, income12, partyreg12.char
-# pew_prayer_12, pid3_12, pid7_12, pvote08, pvote12, race_12_char, religpew_12
-
-# policy position/public opinion/approval variables: CC12_302, CC12_303d, CC12_308a,
-# CC12_320, CC12_321, CC12_322_1:CC12_322_6, CC12_324, CC12_325, CC12_326, CC12_327,
-# CC12_328, CC12_329, CC12_341A, 
-
-# life events: CC12_387_1: CC12_387_13 (ADD CC12_387_2:CC12_387_9 TO PREDICT.CCES)
-
-
-# Pr(>|z|), .001: pvote 08, ideo.diff.repub, pid3_12, CC12_321
-# Pr(>|z|), .01: CC12_302, CC12_322_3
-# Pr(>|z|), .05: partyreg12.char, religpew_12, CC12_322_4
-```
-
-```{r life events, echo = FALSE}
 
 CCES_Panel$perc.docvisit12 <- 100 * sum(CCES_Panel$CC12_387_1 == 1)/nrow(CCES_Panel)
 
@@ -566,48 +523,72 @@ diff.lifeevents <- cces.long.change %>%
   mutate(diff = value.x - value.y)
 
 diff.lifeevents %>%
-  ggplot(aes(diff, name)) + geom_point() + labs(title = "How Switchers and the Electorate Differ", subtitle = "Experiences within the last 2 years", x = "Percentage Point Difference between Electorate and Switchers", y = "Life Event") + theme_minimal() + scale_x_continuous(limits = c(-10, 10)) + scale_y_discrete(label = c("Better job", "Been victim of a crime", "Employee benefits cut", "Visited doctor's office", "Visited emergency room", "Loss of job", "Child moved out", "New child in family", "Divorce", "Marriage", "Promotion at work", "Raise at work", "Traffic ticket"))
-```
-
-```{r testing best vars model, echo = FALSE}
-
-# model and predict with best variables
-
-mod.bestvars <- glm(p12switch ~ pvote08 + ideo.diff.repub + pid3_12 + CC12_321 + CC12_302 + CC12_322_3 + partyreg12_1 + religpew_12_2 + CC12_387_1, binomial, predict.CCES)
-
-# review
-
-mod.bestvars %>%
-  tidy() %>%
-  select(term, estimate, std.error, p.value) %>%
-  arrange(p.value)
-
-mod.bestvars %>%
-  tidy() %>%
-  select(term, estimate, std.error, p.value) %>%
-  arrange(std.error)
-
-# maya model
-
-maya2 <- tibble(pvote08 = 1, ideo.diff.repub = 4, pid3_12 = 2, CC12_321 = 1, CC12_302 = 1, CC12_322_3 = 2, partyreg12_1 = 0, religpew_12_2 = 0, CC12_387_1 = 1)
-
-plogis(predict(mod.bestvars, newdata = maya2))
-```
-
-```{r}
-
-mod.voteandideo <- glm(p12switch ~ pvote08 + race_12_2, binomial, predict.CCES)
-
-mod.voteandideo %>% tidy() %>% select(term, estimate, std.error, p.value) %>% arrange(p.value)
+  ggplot(aes(diff, name)) +
+  geom_point() +
+  labs(title = "How Switchers and the Electorate Differ",
+       subtitle = "Experiences within the last 2 years",
+       x = "Percentage Point Difference between Electorate and Switchers",
+       y = "Life Event") +
+  theme_minimal() +
+  scale_x_continuous(limits = c(-10, 10)) +
+  scale_y_discrete(label = c("Better job", "Been victim of a crime",
+                             "Employee benefits cut", "Visited doctor's office",
+                             "Visited emergency room", "Loss of job",
+                             "Child moved out", "New child in family", "Divorce",
+                             "Marriage", "Promotion at work", "Raise at work",
+                             "Traffic ticket"))
 ```
 
 
-```{r checking model, echo = FALSE}
+```{r models, echo = FALSE}
+
+mod.all <- glm(p12switch ~  age12 + CC12_302 + CC12_303d + CC12_308a + CC12_320 +
+                 CC12_321 + CC12_322_1 + CC12_322_2 + CC12_322_3 + CC12_322_4 +
+                 CC12_322_5 + CC12_322_6 + CC12_324 + CC12_325 + CC12_326 + CC12_327 +
+                 CC12_328 + CC12_329 + CC12_341A + CC12_341C + CC12_341D + CC12_341E +
+                 CC12_341F + CC12_387_1 + CC12_387_2 + CC12_387_3 + CC12_387_4 +
+                 CC12_387_5 + CC12_387_6 + CC12_387_7 + CC12_387_8 + CC12_387_9 +
+                 CC12_387_10 + CC12_387_11 + CC12_387_12  + CC12_387_13 + CC12_422a +
+                 CC12_422b + CC12_423aa + CC12_423bb + educ_12 +  gender_12 + ideo5_12 +
+                 income12 + partyreg12.char + pew_prayer_12 + pvote08 +
+                 pvote12 + race_12_char + religpew_12_char + ideo.diff.repub +
+                 ideo.diff.dem + ideo.diff.romney + ideo.diff.obama, binomial, predict.CCES)
 
 mod.all %>%
   tidy() %>%
   select(term, estimate, std.error, p.value) %>%
   arrange(p.value)
+
+mod.all.check <- mod.all %>%
+  augment(type.predict = "response", type.residuals = "response") %>%
+  mutate(conf.low = .fitted - 1.96 * .se.fit,
+         conf.high = .fitted + 1.96 * .se.fit) %>%
+  select(p12switch, .fitted, conf.low, conf.high, .resid) %>%
+  mutate(bi.fitted = ifelse(.fitted < 0.5, 0, 1),
+         bi.resid = p12switch - bi.fitted,
+         true.positive = ifelse(bi.fitted == 1 & p12switch == 1, 1, 0),
+         false.positive = ifelse(bi.fitted == 1 & p12switch == 0, 1, 0),
+         true.negative = ifelse(bi.fitted == 0 & p12switch == 0, 1, 0),
+         false.negative = ifelse(bi.fitted == 0 & p12switch == 1, 1, 0),
+         status = case_when(true.positive == 1 ~ "TP",
+                            true.negative == 1 ~ "TN",
+                            false.positive == 1 ~ "FP",
+                            false.negative == 1 ~ "FN"))
+
+mod.bestvars <- glm(p12switch ~ pvote08 + ideo.diff.repub + CC12_321 +
+                      CC12_302 + CC12_322_3 + religpew_12_3 + partyreg12_1 +
+                      religpew_12_2, binomial, predict.CCES)
+
+mod.bestvars %>%
+  tidy(conf.int = TRUE) %>%
+  select(term, estimate, conf.low, conf.high, p.value) %>%
+  gt() %>%
+  fmt_number(columns = 2:4, decimals = 2) %>%
+  fmt_number(columns = 5, decimals = 8) %>%
+  cols_label(term = "Variable", estimate = "Estimate", conf.low = "Lower Bound",
+             conf.high = "Upper Bound", p.value = "P Value") %>%
+  tab_header("Effect of 'Best' Variables on Switching",
+             subtitle = "Data from 2010-2014 CCES Panel Survey")
 
 mod.bestvars.check <- mod.bestvars %>%
   augment(type.predict = "response", type.residuals = "response") %>%
@@ -625,79 +606,22 @@ mod.bestvars.check <- mod.bestvars %>%
                             false.positive == 1 ~ "FP",
                             false.negative == 1 ~ "FN"))
 
-summary(mod.bestvars.check)
-  
-
-```
-
-```{r}
-
-model.accuracy.bestvars <- 100 - sum(abs(mod.bestvars.check$bi.resid))/nrow(mod.bestvars.check)
-
-model.bestvars.check.switch <- mod.bestvars.check %>% filter(p12switch == 1)
-
-# both models tend to predict no switching when switching does indeed occur.
-```
-
-```{r plotting status, echo = FALSE}
-
 table(mod.bestvars.check$status)
 
-mod.bestvars.check %>%
-  ggplot(aes(status, .fitted), group = status) +
-  geom_boxplot()
+table(mod.all.check$status)
+
+besvars.accuracy <- 100 - sum(abs(mod.bestvars.check$bi.resid))/nrow(mod.bestvars.check)
+
+bestvars.check.switch <- mod.bestvars.check %>% filter(p12switch == 1)
+
+# The "best" variables model predicts no switching when switching does indeed occur.
 
 mod.bestvars.check %>%
   ggplot(aes(status, .fitted), group = status) +
+  labs(title = "Evaluating the Model's Predictions", x = "Prediction Status",
+       y = "Probability of Switching") +
+  scale_x_discrete(label = c("False Negative", "True Negative", "True Positive")) +
   geom_point() +
-  geom_jitter()
-
-
-```
-
-```{r general plots, echo = FALSE}
-
-# some plots
-
-# 2008 voters on racial attitudes towards Blacks and Hispanics, by vote for president
-
-CCES_Panel_Full3waves_VV_V4 %>%
-  filter(CC12_317 < 3, CC12_422a < 6) %>%
-  ggplot(aes(CC12_422a)) + geom_bar(aes(y = (..count..)/sum(..count..))) + geom_text(aes(label = scales::percent(..prop..), y= ..prop.. ), stat= "count", vjust = -.5) + xlab("Response") + ylab("Portion") + scale_x_continuous(breaks = c(1, 2, 3, 4, 5), label = c("Strongly agree", "Somewhat agree", "Neither agree nor disagree", "Somewhat disagree", "Strongly disagree")) + ggtitle("Racial Resentment of Blacks - 1", subtitle = "The Irish, Italians, Jews and many other minorities overcame prejudice and worked their way up.\nBlacks should do the same without any special favors.") + theme(axis.text.x = element_text(hjust = 1, angle = 30)) + facet_wrap(~ CC12_317, labeller = labeller(CC12_317 = c("1" = "'08 Obama Voters", "2" = "'08 McCain Voters")))
-
-CCES_Panel_Full3waves_VV_V4 %>%
-  filter(CC12_317 < 3, CC12_422b < 6) %>%
-  ggplot(aes(CC12_422b)) + geom_bar(aes(y = (..count..)/sum(..count..))) + geom_text(aes(label = scales::percent(..prop..), y= ..prop.. ), stat= "count", vjust = -.5) + xlab("Response") + ylab("Portion") + scale_x_continuous(breaks = c(1, 2, 3, 4, 5), label = c("Strongly agree", "Somewhat agree", "Neither agree nor disagree", "Somewhat disagree", "Strongly disagree")) + ggtitle("Racial Resentment of Blacks - 2", subtitle = "Generations of slavery and discrimination have created conditions that make it difficult for Blacks\nto work their way out of the lower class.") + theme(axis.text.x = element_text(hjust = 1, angle = 30)) + facet_wrap(~ CC12_317, labeller = labeller(CC12_317 = c("1" = "'08 Obama Voters", "2" = "'08 McCain Voters")))
-
-CCES_Panel_Full3waves_VV_V4 %>%
-  filter(CC12_317 < 3, CC12_423aa < 6) %>%
-  ggplot(aes(CC12_423aa)) + geom_bar(aes(y = (..count..)/sum(..count..))) + geom_text(aes(label = scales::percent(..prop..), y= ..prop.. ), stat= "count", vjust = -.5) + xlab("Response") + ylab("Portion") + scale_x_continuous(breaks = c(1, 2, 3, 4, 5), label = c("Strongly agree", "Somewhat agree", "Neither agree nor disagree", "Somewhat disagree", "Strongly disagree")) + ggtitle("Racial Resentment of Hispanics - 1", subtitle = "The Irish, Italians, Jews and many other minorities overcame prejudice and worked their way up.\nHispanics should do the same without any special favors.") + theme(axis.text.x = element_text(hjust = 1, angle = 30)) + facet_wrap(~ CC12_317, labeller = labeller(CC12_317 = c("1" = "'08 Obama Voters", "2" = "'08 McCain Voters")))
-
-CCES_Panel_Full3waves_VV_V4 %>%
-  filter(CC12_317 < 3, CC12_423bb < 6) %>%
-  ggplot(aes(CC12_423bb)) + geom_bar(aes(y = (..count..)/sum(..count..))) + geom_text(aes(label = scales::percent(..prop..), y= ..prop.. ), stat= "count", vjust = -.5) + xlab("Response") + ylab("Portion") + scale_x_continuous(breaks = c(1, 2, 3, 4, 5), label = c("Strongly agree", "Somewhat agree", "Neither agree nor disagree", "Somewhat disagree", "Strongly disagree")) + ggtitle("Racial Resentment of Hispanics - 2", subtitle = "Generations of slavery and discrimination have created conditions that make it difficult for\nHispanics to work their way out of the lower class.") + theme(axis.text.x = element_text(hjust = 1, angle = 30)) + facet_wrap(~ CC12_317, labeller = labeller(CC12_317 = c("1" = "'08 Obama Voters", "2" = "'08 McCain Voters")))
-
-# Change in Presidential Approval in general public vs changes in presidential approval in switchers
-
-CCES_Panel_Full3waves_VV_V4 %>%
-  filter(CC10_308a < 5, CC12_308a < 5, CC14_308a < 5) %>%
-  ggplot(aes(as.numeric(CC10_308a - CC14_308a))) + geom_bar() + geom_text(aes(label = scales::percent(..prop..), y= ..prop.. ), stat= "count", vjust = 1) + xlab("<-Negative Movement Positive->") + ylab("Respondents") + ggtitle("Change in Presidential Approval from 2010 to 2014: General Public")
-
-# Change in presidential approval in switchers
-
-CCES_Panel_Full3waves_VV_V4 %>%
-  filter(CC10_308a < 5, CC12_308a < 5, CC14_308a < 5, CC10_317 < 3, CC12_410a < 3, CC10_317 != CC12_410a) %>%
-  ggplot(aes(as.numeric(CC10_308a - CC14_308a))) + geom_bar() + geom_text(aes(label = scales::percent(..prop..), y= ..prop.. ), stat= "count", vjust = 1) + xlab("<-Negative Movement Positive->") + ylab("Respondents") + ggtitle("Change in Presidential Approval from 2010 to 2014: Switchers")
-
-# Change in presidential approval for D-to-R switchers
-
-CCES_Panel_Full3waves_VV_V4 %>%
-  filter(CC10_308a < 5, CC12_308a < 5, CC14_308a < 5, CC10_317 == 1, CC12_410a == 2) %>%
-  ggplot(aes(as.numeric(CC10_308a - CC14_308a))) + geom_bar() + geom_text(aes(label = scales::percent(..prop..), y= ..prop.. ), stat= "count", vjust = 1) + xlab("<-Negative Movement Positive->") + ylab("Respondents") + ggtitle("Change in Presidential Approval from 2010 to 2014: Dem-to-Rep Switchers")
-
-# Change in presidential approval for R-to-D switchers
-
-CCES_Panel_Full3waves_VV_V4 %>%
-  filter(CC10_308a < 5, CC12_308a < 5, CC14_308a < 5, CC10_317 == 2, CC12_410a == 1) %>%
-  ggplot(aes(as.numeric(CC10_308a - CC14_308a))) + geom_bar() + geom_text(aes(label = scales::percent(..prop..), y= ..prop.. ), stat= "count", vjust = 1) + xlab("<-Negative Movement Positive->") + ylab("Respondents") + ggtitle("Change in Presidential Approval from 2010 to 2014: Rep-to-Dem Switchers")
+  geom_jitter() +
+  theme_minimal()
 ```

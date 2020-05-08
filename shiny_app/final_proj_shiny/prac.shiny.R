@@ -6,7 +6,9 @@ library(ggplot2)
 
 CCES_Panel <- read_rds("CCES.rds")
 switchers <- read_rds("switchers.rds")
-pres12_vars <- read_rds("pres12_vars.rds")
+diff.lifeevents <- read_rds("diff.lifeevents.rds")
+mod.bestvars <- read_rds("mod.bestvars.rds")
+mod.bestvars.check <- read_rds("mod.bestvars.check.rds")
 
 ui <- fluidPage(navbarPage("Switchers",
                            theme = shinytheme("simplex"),
@@ -41,8 +43,13 @@ ui <- fluidPage(navbarPage("Switchers",
                                              p("The particular group of switchers examined here are the 2012 Presidential election switchers in the
                                                United States. These switchers can be divided neatly into two groups - 1) Those who voted for the Republican
                                                candidate (John McCain) in 2008 and for the Democratic candidate (Barack Obama) in 2012 and 2) Those who voted for
-                                               the Democratic candidate (Obama) in 2008 and for the Republican candidate (Mitt Romney) in 2012."))),
-                           
+                                               the Democratic candidate (Obama) in 2008 and for the Republican candidate (Mitt Romney) in 2012."),
+                                    
+                                    h4(strong("About the Author"), align = "center")),
+                           p("David J. Sutton is a first-year Ph.D. student at Harvard University studying American Politics. His research interests
+                             include constitutional history and interpretation, early American political thought, elections and voting behavior. You
+                             can contact him at dsutton@g.harvard.edu."),
+                           p("The code for this project can be found ", tags$a("here.", href="https://github.com/dsutton1130/final-project-work"))),
                            
                            tabPanel("Graphics",
                                     tabsetPanel(
@@ -61,7 +68,7 @@ ui <- fluidPage(navbarPage("Switchers",
                                                                                 "Income" = "income12"),
                                                                  selected = "Race")),
                                                  mainPanel(plotOutput("CCES_Panel"))),
-                                        tabPanel("Demographics of the Switchers",
+                                        tabPanel("Demographics",
                                                  h3("President 2012 Switchers"),
                                                  sidebarPanel(
                                                      helpText("Select a demographic group to learn about switchers"),
@@ -78,7 +85,7 @@ ui <- fluidPage(navbarPage("Switchers",
                                                  mainPanel(plotOutput("switchers"))),
                                         tabPanel("Life Events",
                                                  h3("Life Events in the Previous 2 Years"),
-                                                 mainPanel(plotOutput("pres12_vars")),
+                                                 mainPanel(plotOutput("diff.lifeevents")),
                                                  p("Voters were asked if they had experienced any of the specified life events
                                                (listed on the graph's y-axis) over the past 2 years. This graph indicates the
                                                difference in percentage points between those who answered 'yes' in the general
@@ -86,9 +93,46 @@ ui <- fluidPage(navbarPage("Switchers",
                                                switchers."),
                                                  br(),
                                                  p("There does not seem to be much difference between the electorate and switchers
-                                             regarding the percentage of each group which experienced these life events about
-                                             2 years before the 2012 Presidential election."))
-                                        ))))
+                                             regarding the percentage of each group which experienced these life events within approximately
+                                             2 years before the 2012 Presidential election.")),
+                                        tabPanel("Model",
+                                                 h3("Logistic Regression"),
+                                                 mainPanel(tableOutput("mod.bestvars")), br(),
+                                                 p("After running a logistic regression on over 50 variables, I identified
+                                                   the 8 variables which best predicted switching in the 2012 Presidential
+                                                   election. The table to the left displays the results of regressing switching
+                                                   on these 8 variables."), 
+                                                 p("The variables are represented as follows: pvote08 asked in 2010 which candidate the
+                                                   respondent voted for in 2008, with a response of 1 being Barack Obama and a response of 2
+                                                   being John McCain. The variable ideo.diff.repub is the absolute value of the difference between a
+                                                   respondent's self-placement and their placement of the Republican party on a 7-point
+                                                   ideological scale, with 1 as 'Very Liberal' and 7 as 'Very Conservative.' CC12_321 is a question
+                                                   which asked respondents about their views on climate change, with option 1 being the least skeptical
+                                                   about the existence of climate change and 5 representing the most skeptical view on the subject ('Global
+                                                   climate change is not occurring; this is not a real issue'). CC12_302 asks respondents: 'Would you say that
+                                                   OVER THE PAST YEAR the nation’s economy has...?' and the respondents choices were 1) Gotten much better,
+                                                   2) Gotten better, 3) Stayed about the same, 4) Gotten worse, 5) Gotten much worse. CC12_322_3 asks respondents
+                                                   what the United States should do about immigration - respondents were asked if the government should allow
+                                                   police to question anyone they think may be in the country illegally. The variable religpew_12_3 is a binary
+                                                   variable indicating if the respondent is Mormon, with 1 as yes and 0 as no. The variable partyreg12_1 is a binary
+                                                   variable indicating if the respondent identified as an Independent, not affiliated with any party, or would not say
+                                                   with which political party they affiliate, with 1 indicating they belong to this group and 0 indicating they do not.
+                                                   Religpew_12_2 indicates if the respondent is Roman Catholic, with a 1 as yes and a 0 as no."), br(),
+                                                   p("The codebook for this iteration of the CCES can be found ", tags$a("here.", href="https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi%3A10.7910/DVN/TOE8I1")), br(),
+                                        p("And code for this project can be found ", tags$a("here.", href="https://github.com/dsutton1130/final-project-work")),
+                                        span(),
+                                                 column(12, align = "left",
+                                                 h3("Modeling"), br(),
+                                                 mainPanel(plotOutput("mod.bestvars.check")), br(),
+                                                 p("This plot reveals the difficulty in attempting to model for switching in the 2012
+                                                   Presidential election. An evaluation of the logistic regression model used above reveals
+                                                   that although the model correctly predicted the lack of switching in over 8000 respondents
+                                                   and correctly identified 2 respondents who did switch (identified in the plot as 'True Negatives'
+                                                   and 'True Positives', respectively), the model failed to identify almost 299 switchers (identified
+                                                   in the plot as 'False Negatives'). The conclusion at which we arrive is that, at least as indicated by
+                                                   the variables measured in the 2010-2014 CCES Panel Survey, 2012 Presidential election switchers are not
+                                                   significantly different than voters in the general electorate of the same election.")
+                                    ))))))
 
 server <- function(input, output, session){
     
@@ -219,9 +263,11 @@ server <- function(input, output, session){
                 filter(p12switch == 1) %>%
                 ggplot(aes(race_12, ..prop.., fill = reorder(presvote12, race_12)), stat = "count") +
                 geom_bar(aes(y = ..count../sum(..count..)), position = position_dodge()) +
-                scale_y_continuous(labels = scales::percent) + labs(x = "Race of Switchers",
-                                                                    y = "Percentage of Switchers",
-                                                                    title = "President 2012 Switchers by Race") +
+                scale_y_continuous(labels = scales::percent) +
+                labs(x = "Race of Switchers",
+                     y = "Percentage of Switchers",
+                     title = "President 2012 Switchers by Race",
+                     caption = "Source: 2010-2014 Cooperative Congressional Election Study Panel Survey") +
                 scale_x_continuous(breaks = c(1, 2, 3, 4, 5, 6, 7),
                                    label = c("White", "Black", "Hispanic", "Asian", "Native American", "Mixed", "Other")) +
                 theme_classic() + scale_fill_manual("Voted for", labels = c("Obama-Romney", "McCain-Obama"),
@@ -311,7 +357,7 @@ server <- function(input, output, session){
         
     })
     
-    output$pres12_vars <- renderPlot({
+    output$diff.lifeevents <- renderPlot({
         diff.lifeevents %>%
             ggplot(aes(diff, name)) +
             geom_point() +
@@ -325,6 +371,31 @@ server <- function(input, output, session){
                                        "Visited doctor's office", "Visited emergency room", "Loss of job",
                                        "Child moved out", "New child in family", "Divorce", "Marriage",
                                        "Promotion at work", "Raise at work", "Traffic ticket"))
+    })
+    
+    output$mod.bestvars <- render_gt({
+        mod.bestvars %>%
+            tidy(conf.int = TRUE) %>%
+            select(term, estimate, conf.low, conf.high, p.value) %>%
+            gt() %>%
+            fmt_number(columns = 2:4, decimals = 2) %>%
+            fmt_number(columns = 5, decimals = 8) %>%
+            cols_label(term = "Variable", estimate = "Estimate", conf.low = "Lower Bound",
+                       conf.high = "Upper Bound", p.value = "P Value") %>%
+            tab_header("Effect of 'Best' Variables on Switching",
+                       subtitle = "Data from 2010-2014 CCES Panel Survey")
+    })
+    
+    output$mod.bestvars.check <- renderPlot({
+        mod.bestvars.check %>%
+            ggplot(aes(status, .fitted), group = status) +
+            labs(title = "Evaluating the Model's Predictions", x = "Prediction Status",
+                 y = "Probability of Switching",
+                 caption = "Source: 2010-2014 Cooperative Congressional Election Study Panel Survey") +
+            scale_x_discrete(label = c("False Negative", "True Negative", "True Positive")) +
+            geom_point() +
+            geom_jitter() +
+            theme_minimal()
     })
 }
 
