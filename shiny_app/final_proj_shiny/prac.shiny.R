@@ -47,7 +47,7 @@ ui <- fluidPage(navbarPage("Switchers",
                                                the Democratic candidate (Obama) in 2008 and for the Republican candidate (Mitt Romney) in 2012."),
                                              
                                              h4(strong("About the Author"), align = "center"),
-                                    p("David J. Sutton is a first-year Ph.D. student at Harvard University studying American Politics. His research interests
+                                    p("David J. Sutton is a second-year Ph.D. student at Harvard University studying American Politics. His research interests
                              include constitutional history and interpretation, early American political thought, elections and voting behavior. You
                              can contact him at dsutton@g.harvard.edu."),
                                     p("The code for this project can be found ", tags$a("here.", href="https://github.com/dsutton1130/final-project-work")))),
