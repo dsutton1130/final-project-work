@@ -23,6 +23,7 @@ library(tidymodels)
 library(rpart.plot)
 library(parsnip)
 library(fastDummies)
+library(fivethirtyeight)
 options(scipen=999)
 ```
 
@@ -446,7 +447,9 @@ predict.CCES <- CCES_Panel.reg %>%
          ideo.diff.obama = abs(CC12_341A - CC12_341C),
          ideo.diff.romney = abs(CC12_341A - CC12_341D),
          ideo.diff.dem = abs(CC12_341A - CC12_341E),
-         ideo.diff.repub = abs(CC12_341A - CC12_341F))
+         ideo.diff.repub = abs(CC12_341A - CC12_341F),
+         region12 = ifelse(StateAbbr_12 %in% state_info$state_abbrev,
+                           state_info$region, "NA"))
 ```
 
 ```{r life events, echo = FALSE}
@@ -623,3 +626,5 @@ mod.bestvars.check %>%
   geom_jitter() +
   theme_minimal()
 ```
+
+
